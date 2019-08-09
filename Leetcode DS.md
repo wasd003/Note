@@ -543,3 +543,39 @@ while ((N - 1)--)//松弛N-1次
 [44.移掉k位数字](https://leetcode-cn.com/problems/remove-k-digits/submissions/)
 **思路：**维护一个非递减栈，最终栈中剩下的就是答案字符串
 ****
+[45.三数之和的多种可能](https://leetcode-cn.com/problems/3sum-with-multiplicity/submissions/)
+**收获：**
+1. 对于数组长度比较长，但是数组中数据的大小比较小的时候，可以枚举数而不是枚举下标
+2. 答案数比较大，需要返回取模的答案时，不要每次res+=x,再res%=mod,应该int delta=x%mod,再res=(res+delta)%mod
+****
+[46.划分字母区间](https://leetcode-cn.com/problems/partition-labels/submissions/)
+如果题目中说明字符串中只包含a~z的小写字母，那么通常都需要定一个count[26],记录每个字母出现的次数
+****
+[47.匹配子序列的单词数](https://leetcode-cn.com/problems/number-of-matching-subsequences/submissions/)
+**判断一个字符串是否是另一个字符串的子序列:**先预处理出母串中每一个字母出现的所有位置，然后对子串中的每一个字母贪心的匹配
+>code:
+
+```
+bool Is_SubSequence(string S, string s)//S是母串，s是子串 
+{
+	vector<int>hash[26];
+	int n = S.size();
+	for (int i = 0; i < n; ++i)
+	{
+		hash[S[i] - 'a'].push_back(i);
+	}
+	int m = s.size();
+	int pre = -1;//前一个字母匹配的位置
+	for (int i = 0; i < m; ++i)
+	{
+		auto index = lower_bound(hash[s[i] - 'a'].begin(), hash[s[i] - 'a'].end(), pre + 1);
+		if (index == hash[s[i] - 'a'].end())
+		{
+			return false;
+		}
+		pre = *index;
+	}
+	return true;
+}
+```
+****
