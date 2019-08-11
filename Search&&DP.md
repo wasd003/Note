@@ -90,3 +90,9 @@ void dfs(int a,int b)
 **可转移的条件：**搜索四个方向时：
 >(1)如果mapp[nr][nc]是1，continue（1没有必要搜索）
 >(2)(nr,nc)的ns应该小于ans[nr][nc]
+
+****
+[7.装满的油箱](https://www.acwing.com/problem/content/178/)
+**拆点：**把每个城市拆为C个，每一个点(i,j) i:城市编号 j:汽车到达该城市时的剩余油量
+**dijkstra：**拆点后可以使用dijkstra，每次转移，要么就到达一个下一个城市（前提油够并且是最短“路”），要么就加1升油（前提油箱不满并且是最短“路”）
+****

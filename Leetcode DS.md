@@ -579,3 +579,37 @@ bool Is_SubSequence(string S, string s)//S是母串，s是子串
 }
 ```
 ****
+[48.连续数组](https://leetcode-cn.com/problems/contiguous-array/submissions/)
+- 三目运算符参与运算的时候记得加上括号 比如：pre[i] = pre[i - 1] + (nums[i - 1] == 1?  1 : -1);
+- 把0变成-1，则原题目转换为求一个最长的区间和为0的子数组。而区间和为0可以转换为前缀和相等。
+- **数组中的题目可以把数组中的元素进行改变，从而将原题目转化为区间和的问题**（类似的题目还有[39.表现良好的最长时间段](https://leetcode-cn.com/problems/longest-well-performing-interval/))
+****
+[49.最低加油次数](https://leetcode-cn.com/problems/minimum-number-of-refueling-stops/submissions/)
+[算法二](https://www.acwing.com/solution/LeetCode/content/591/?time=1565407380077)
+vector任意位置插入：v.insert(it,num) //在it迭代器前插入元素num。如果要在头部插入it=v.begin()
+****
+[50.寻找重复的子树](https://leetcode-cn.com/problems/find-duplicate-subtrees/submissions/)
+**思路：**将树编码为字符串，用哈希表存储，如果第二次遇见就输出答案到res中。
+编码方式：
+```
+string verify(TreeNode* root)
+    {
+        if(!root) return "#";
+        string cur=to_string(root->val)+",";
+        cur+=verify(root->left)+",";
+        cur+=verify(root->right);
+        hash[cur]++;
+        if(hash[cur]==2) res.push_back(root);
+        return cur;
+    }
+```
+编码结果：树的前序遍历，空节点用#表示，每个节点之间用逗号隔开，字符串最后没有逗号
+比如[1,2,3,NULL,NULL,NULL,NULL]的编码为
+1，2，#，#，3，#，#
+****
+[51.树中距离之和](https://leetcode-cn.com/problems/sum-of-distances-in-tree/submissions/)
+**思路：**
+>(1)将无根树看作以0为根的有根树，dfs更新出sum【u】(以u为结点的子树路径之和)和num【u】(以u为结点的子树节点数量，包括u自身)
+>(2)从0号结点开始bfs，逐渐扩展到子节点，每次根据公式求出当前结点的距离之和。公式：设u为当前结点，p为父节点，则sum【u】=sum【p】+N-2*num【u】。
+
+****
