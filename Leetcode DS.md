@@ -205,8 +205,8 @@ int dep(TreeNode* root)
 **核心思路：**先把四周的零及其联通块变成#，然后遍历棋盘，#->O,O->X
 ****
 [19.等式方程的可满足性](https://leetcode-cn.com/problems/satisfiability-of-equality-equations/submissions/)
-- **1.并查集：**
-> (1)并查集的本质：树
+- **并查集：**
+> (1)并查集的本质  
 > (2)ufs[x]的意义：如果ufs[x]>0，那么表示的是x的同伴的编号，如果ufs[x]<0，那么表明x是根，abs(ufs[x])表示该集合中点的个数
 
 **code：**
@@ -229,7 +229,8 @@ int Count(int x)
 {
 	x = Find(x);
 	return -ufs[x];
-}```
+}
+```  
 ****
 [20.用斜杠划分区域](https://leetcode-cn.com/problems/regions-cut-by-slashes/submissions/)
 [题解](https://blog.csdn.net/qq_17550379/article/details/85262219)
@@ -343,42 +344,47 @@ void dfs(int u, int p)
 <hr/>
 
 <a href="https://leetcode-cn.com/problems/odd-even-jump/submissions/">28.奇偶跳</a>
->(1)查找数组中第i个元素右侧比他大的元素中最小的那一个（或者比他小的元素中最大的那一个）的位置的方法：倒序枚举，用堆来自动排序后进行二分查找：O（NlogN）
+>(1)查找数组中第i个元素右侧比他大的元素中最小的那一个（或者比他小的元素中最大的那一个）的位置的方法：倒序枚举，用堆来自动排序后进行二分查找：O（NlogN）  
 >(2)set/multiset中upper/lower_bound的使用：
 >与一般的泛型算法中的upper/lower_bound不同的是：set中的二分查找不需要传容器的迭代器，只需要传查找的元素
 >lower_bound:返回的是等于或者比tar大一点点的元素的迭代器
 >upper_bound:返回的是比tar大一点点的元素的迭代器
-<p style="color:red;">这里的大一点点指的是大于的元素中最小的那一个</p>
+<p style="color:red;">这里的大一点点指的是大于的元素中最小的那一个</p>  
+
 ****
 
 [29.去除重复字母](https://leetcode-cn.com/problems/remove-duplicate-letters/submissions/)
 [题解](https://www.acwing.com/solution/LeetCode/content/93/)
 **原来string有pop_back()这个操作吼吼**
-***
+****
 [30.雇佣k名工人的最低成本](https://leetcode-cn.com/problems/minimum-cost-to-hire-k-workers/submissions/)
-<p style="color:red;">重要题目：拓展贪心思路</p>
-**双指标贪心的做法:**如果贪心有两个指标（比如a,b），通常是按照a×b排序，或者a/b排序。可以使用交换法证明。但是稍微复杂的题目不可能这么简单就过。需要排完序后扫描一遍排序数组，每次考虑取第i个或者前i个，结合其他变量/条件更新出最优答案。
-**本题核心思路：**先按照：wage/quality排序，得到单位工作量的价格，这样总的费用就是单位工作量价格×总工作量。每次考虑以第i个人为单位价格的最大值，只需要让总工作量最小：所以需要一个大根堆，每当其容量超过K时，弹出堆顶元素。
+<p style="color:red;">重要题目：拓展贪心思路</p>  
+
+1. 双指标贪心的做法:如果贪心有两个指标（比如a,b），通常是按照a×b排序，或者a/b排序。可以使用交换法证明。但是稍微复杂的题目不可能这么简单就过。需要排完序后扫描一遍排序数组，每次考虑取第i个或者前i个，结合其他变量/条件更新出最优答案。  
+
+2. 本题核心思路：先按照：wage/quality排序，得到单位工作量的价格，这样总的费用就是单位工作量价格×总工作量。每次考虑以第i个人为单位价格的最大值，只需要让总工作量最小：所以需要一个大根堆，每当其容量超过K时，弹出堆顶元素。
 ****
 [31.水位上升的泳池游泳](https://leetcode-cn.com/problems/swim-in-rising-water/submissions/)
-<p style="color:red;">重要题目 拓展搜索思路</p>
-**使用优先队列BFS：**通常情况下的搜索是盲目的枚举，但是如果使用优先队列优化，将更接近答案的元素赋予更大的优先级，这样每次取出队头，相当于搜索具有了指向性。
-**本题核心思路：**本题中grid[i][j]越小越好，所以可以使用小根堆优化BFS
+<p style="color:red;">重要题目 拓展搜索思路</p>  
+
+1. 使用优先队列BFS：通常情况下的搜索是盲目的枚举，但是如果使用优先队列优化，将更接近答案的元素赋予更大的优先级，这样每次取出队头，相当于搜索具有了指向性。
+2. 本题核心思路：本题中grid[i][j]越小越好，所以可以使用小根堆优化BFS
 ****
 [32.超级丑数](https://leetcode-cn.com/problems/super-ugly-number/submissions/)
 <p style="color:red;">经典题目</p>
+
 每一个质数对应一个指向已生成丑数序列的指针，如果该质数使丑数序列增长，指针后移一位
 ****
 [33.二叉树的最近公共祖先](https://leetcode-cn.com/problems/lowest-common-ancestor-of-a-binary-tree/)
-这是一组题：
-（1）如果树是二叉搜索树：根据两个tar与root的大小关系递归查找
-（2）如果不是二叉搜索树但是有指向父节点的指针：等价于寻找两个链表的第一个相交节点
+这是一组题：  
+（1）如果树是二叉搜索树：根据两个tar与root的大小关系递归查找  
+（2）如果不是二叉搜索树但是有指向父节点的指针：等价于寻找两个链表的第一个相交节点  
 （3）如果不是二叉搜索树也没有指向父节点的指针：先从root开始查找到两个tar的路径，然后转化为寻找两个链表的第一个相交节点
 ****
 [34.树的中序遍历](https://leetcode-cn.com/problems/binary-tree-inorder-traversal/)
-两个要点：
->(1)把一个元素插入栈中，那么就要把他左面的一条链都插入栈中
->(2)取出栈顶元素并输出后，要把他右边的元素插入栈中
+两个要点：  
+>(1)把一个元素插入栈中，那么就要把他左面的一条链都插入栈中  
+>(2)取出栈顶元素并输出后，要把他右边的元素插入栈中  
 ```
  vector<int> inorderTraversal(TreeNode* root) {
         stack<TreeNode*>s;
@@ -420,12 +426,12 @@ void SelectPrime(int n, vector<int>&prime)    //二四筛法
 }
 ```
 ****
-[35.移除最多的同行或同列石头](https://leetcode-cn.com/problems/most-stones-removed-with-same-row-or-column/submissions/)
-**本质：**联通块题目，只不过不是上下左右相连而是同行同列相连
-**并查集的使用：**不是点与点之间组成并查集，而是行与列之间。因为最多10000行，所以可以用c+10000表示列
+[35.移除最多的同行或同列石头](https://leetcode-cn.com/problems/most-stones-removed-with-same-row-or-column/submissions/)  
+1. 本质：联通块题目，只不过不是上下左右相连而是同行同列相连  
+2. 并查集的使用：不是点与点之间组成并查集，而是行与列之间。因为最多10000行，所以可以用c+10000表示列
 ****
-[36.最短的桥](https://leetcode-cn.com/problems/shortest-bridge/submissions/)
-**从若干个点到若干个点的最短路:**先把若干个点添加进队列，BFS，当遇到另一部分的若干个点时说明找到了答案。
+[36.最短的桥](https://leetcode-cn.com/problems/shortest-bridge/submissions/)  
+从若干个点到若干个点的最短路:先把若干个点添加进队列，BFS，当遇到另一部分的若干个点时说明找到了答案。
 ****
 <center><h1 style="color:brown;">最短路算法</h1></center>
 
@@ -517,42 +523,45 @@ while ((N - 1)--)//松弛N-1次
 <li>编码方式：将字符串看作一个26进制数，然后将其转化为十进制</li>
 <li>应用场景：字符串匹配问题</li>
 <li>使用方法：设置一个长度为k的滑动窗口，依次计算窗口内字符串的编码值，但是注意每次不要重复算，要利用上一次算的结果</li>
-</ul>
+</ul>  
+
 ****
-[38.字母异位词分组](https://leetcode-cn.com/problems/group-anagrams/submissions/)
-(1)map的查询除了使用下标还可以用find函数，如果返回的是end()说明key没有对应的value
-(2)字母异位词的判断：排序后相同表示是字母异位词
+[38.字母异位词分组](https://leetcode-cn.com/problems/group-anagrams/submissions/)  
+1. map的查询除了使用下标还可以用find函数，如果返回的是end()说明key没有对应的value  
+2. 字母异位词的判断：排序后相同表示是字母异位词
 ****
-[39.表现良好的最长时间段](https://leetcode-cn.com/problems/longest-well-performing-interval/submissions/)
+[39.表现良好的最长时间段](https://leetcode-cn.com/problems/longest-well-performing-interval/submissions/)  
 本质上是求一个最长上坡。求法：维护两个数组：minl[i]表示i向左最小的数，maxr[i]表示i向右最大的数。然后使用双指针扫描一遍
 ****
 [40.实现trie](https://leetcode-cn.com/problems/implement-trie-prefix-tree/submissions/)
 ****
 [41.索引处的解码字符串](https://leetcode-cn.com/problems/decoded-string-at-index/solution/suo-yin-chu-de-jie-ma-zi-fu-chuan-by-leetcode/)
-<div style="color:red;">没看懂题解qwq</div>
+<div style="color:red;">没看懂题解qwq</div>  
+
 ****
-[42.子数组的最小值之和](https://leetcode-cn.com/problems/sum-of-subarray-minimums/submissions/)
-**大致思路：**考虑每一个元素右边第一个比他小的元素的位置和第一个左边比他小的元素的位置，在这两个位置之间当前元素最小，用组合出的子集数量×该元素的值得到该元素对答案的贡献。全部累加得到最终的答案
-**细节：**
-(1)组合出的元素数目：假设该元素左边有x个元素比他大，右边有y个元素比它大，那么可以凑成的子集数量是：**x+y+xy+1**
-(2)**大于还是大于等于：**如果求左&&右第一个小于等于当前元素的位置，那么对于含有重复元素的数据比如[3，4，5，3]那么【3，3】这个区间就没算。如果是求左&&右第一个严格小于当前元素的位置，那么【3，3】这个区间就算了两次。所以**解决方案**是左右两个区间一个是第一个严格小于当前元素的元素位置，一个是第一个小于等于当前元素的元素位置。这样就可以保证对于上面说的这种情况只算了一次。
+[42.子数组的最小值之和](https://leetcode-cn.com/problems/sum-of-subarray-minimums/submissions/)  
+1. 大致思路：考虑每一个元素右边第一个比他小的元素的位置和第一个左边比他小的元素的位置，在这两个位置之间当前元素最小，用组合出的子集数量×该元素的值得到该元素对答案的贡献。全部累加得到最终的答案
+2. 细节：  
+- 组合出的元素数目：假设该元素左边有x个元素比他大，右边有y个元素比它大，那么可以凑成的子集数量是：**x+y+xy+1**
+- 大于还是大于等于：如果求左&&右第一个小于等于当前元素的位置，那么对于含有重复元素的数据比如[3，4，5，3]那么【3，3】这个区间就没算。如果是求左&&右第一个严格小于当前元素的位置，那么【3，3】这个区间就算了两次。所以**解决方案**是左右两个区间一个是第一个严格小于当前元素的元素位置，一个是第一个小于等于当前元素的元素位置。这样就可以保证对于上面说的这种情况只算了一次。
 ****
-[43.132模式](https://leetcode-cn.com/problems/132-pattern/submissions/)
-**算法的正确性：**因为stk中保存的数都是已经遍历过的，所以stk中的数字一定在当前数字的右边。即：stk的数字具有成为“3”的潜质（位置正确),当nums[i]>stk.top()时，可以更新three（因为满足2>3）
+[43.132模式](https://leetcode-cn.com/problems/132-pattern/submissions/)  
+
+**算法的正确性**:因为stk中保存的数都是已经遍历过的，所以stk中的数字一定在当前数字的右边。即：stk的数字具有成为“3”的潜质（位置正确),当nums[i]>stk.top()时，可以更新three（因为满足2>3）
 ****
-[44.移掉k位数字](https://leetcode-cn.com/problems/remove-k-digits/submissions/)
-**思路：**维护一个非递减栈，最终栈中剩下的就是答案字符串
+[44.移掉k位数字](https://leetcode-cn.com/problems/remove-k-digits/submissions/)  
+**思路**:维护一个非递减栈，最终栈中剩下的就是答案字符串
 ****
-[45.三数之和的多种可能](https://leetcode-cn.com/problems/3sum-with-multiplicity/submissions/)
-**收获：**
+[45.三数之和的多种可能](https://leetcode-cn.com/problems/3sum-with-multiplicity/submissions/)  
+**收获**:
 1. 对于数组长度比较长，但是数组中数据的大小比较小的时候，可以枚举数而不是枚举下标
 2. 答案数比较大，需要返回取模的答案时，不要每次res+=x,再res%=mod,应该int delta=x%mod,再res=(res+delta)%mod
 ****
-[46.划分字母区间](https://leetcode-cn.com/problems/partition-labels/submissions/)
+[46.划分字母区间](https://leetcode-cn.com/problems/partition-labels/submissions/)  
 如果题目中说明字符串中只包含a~z的小写字母，那么通常都需要定一个count[26],记录每个字母出现的次数
 ****
-[47.匹配子序列的单词数](https://leetcode-cn.com/problems/number-of-matching-subsequences/submissions/)
-**判断一个字符串是否是另一个字符串的子序列:**先预处理出母串中每一个字母出现的所有位置，然后对子串中的每一个字母贪心的匹配
+[47.匹配子序列的单词数](https://leetcode-cn.com/problems/number-of-matching-subsequences/submissions/)  
+**判断一个字符串是否是另一个字符串的子序列**:先预处理出母串中每一个字母出现的所有位置，然后对子串中的每一个字母贪心的匹配
 >code:
 
 ```
@@ -579,17 +588,17 @@ bool Is_SubSequence(string S, string s)//S是母串，s是子串
 }
 ```
 ****
-[48.连续数组](https://leetcode-cn.com/problems/contiguous-array/submissions/)
+[48.连续数组](https://leetcode-cn.com/problems/contiguous-array/submissions/)  
 - 三目运算符参与运算的时候记得加上括号 比如：pre[i] = pre[i - 1] + (nums[i - 1] == 1?  1 : -1);
 - 把0变成-1，则原题目转换为求一个最长的区间和为0的子数组。而区间和为0可以转换为前缀和相等。
 - **数组中的题目可以把数组中的元素进行改变，从而将原题目转化为区间和的问题**（类似的题目还有[39.表现良好的最长时间段](https://leetcode-cn.com/problems/longest-well-performing-interval/))
 ****
 [49.最低加油次数](https://leetcode-cn.com/problems/minimum-number-of-refueling-stops/submissions/)
-[算法二](https://www.acwing.com/solution/LeetCode/content/591/?time=1565407380077)
+[算法二](https://www.acwing.com/solution/LeetCode/content/591/?time=1565407380077)  
 vector任意位置插入：v.insert(it,num) //在it迭代器前插入元素num。如果要在头部插入it=v.begin()
 ****
-[50.寻找重复的子树](https://leetcode-cn.com/problems/find-duplicate-subtrees/submissions/)
-**思路：**将树编码为字符串，用哈希表存储，如果第二次遇见就输出答案到res中。
+[50.寻找重复的子树](https://leetcode-cn.com/problems/find-duplicate-subtrees/submissions/)  
+**思路**:将树编码为字符串，用哈希表存储，如果第二次遇见就输出答案到res中。
 编码方式：
 ```
 string verify(TreeNode* root)
@@ -607,9 +616,9 @@ string verify(TreeNode* root)
 比如[1,2,3,NULL,NULL,NULL,NULL]的编码为
 1，2，#，#，3，#，#
 ****
-[51.树中距离之和](https://leetcode-cn.com/problems/sum-of-distances-in-tree/submissions/)
-**思路：**
->(1)将无根树看作以0为根的有根树，dfs更新出sum【u】(以u为结点的子树路径之和)和num【u】(以u为结点的子树节点数量，包括u自身)
->(2)从0号结点开始bfs，逐渐扩展到子节点，每次根据公式求出当前结点的距离之和。公式：设u为当前结点，p为父节点，则sum【u】=sum【p】+N-2*num【u】。
+[51.树中距离之和](https://leetcode-cn.com/problems/sum-of-distances-in-tree/submissions/)  
+**思路**:
+1. 将无根树看作以0为根的有根树，dfs更新出sum【u】(以u为结点的子树路径之和)和num【u】(以u为结点的子树节点数量，包括u自身)
+2. 从0号结点开始bfs，逐渐扩展到子节点，每次根据公式求出当前结点的距离之和。公式：设u为当前结点，p为父节点，则sum【u】=sum【p】+N-2*num【u】。
 
 ****
