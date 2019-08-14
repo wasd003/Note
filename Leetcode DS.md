@@ -622,3 +622,21 @@ string verify(TreeNode* root)
 2. 从0号结点开始bfs，逐渐扩展到子节点，每次根据公式求出当前结点的距离之和。公式：设u为当前结点，p为父节点，则sum【u】=sum【p】+N-2*num【u】。
 
 ****
+[52.全排列Ⅱ](https://leetcode-cn.com/problems/permutations-ii/)  
+**思路**：每一轮选择的时候不能选择重复的元素，例如这一轮已经选过10了，那么在之后的循环过程中如果又遇见10就不用再选了。
+****
+[53.子集Ⅱ](https://leetcode-cn.com/problems/subsets-ii/submissions/)  
+**思路**：用一个哈希表记录nums中每一个数字num出现的次数tot，每一轮考虑放进数组中i(0<=i<=tot)个num  
+**map的遍历**：  
+- 使用迭代器：it->first是key，it->second是value。  
+- auto自动遍历：(auto k:hash) k.first是key，k.second是value  
+- 可以使用.size()查看当前键值对的个数  
+****
+[54.火柴拼正方形](https://leetcode-cn.com/problems/matchsticks-to-square/submissions/)  
+就是《木棒》  
+**剪枝**：  
+- nums数字倒序排序，决策少的元素放在决策树的上面  
+- 如果第一根木棒就拼接失败，直接返回false，样例：【 5,5,5,5,16,4,4,4,4,4,3,3,3,3,4】  
+- 如果当前木棒拼接失败，跳过与当前木棒长度相同的所有木棒  
+- 拼接正方形每一条边的时候规定木棒的长度从大到小：因为拼5，4和拼4，5其实是一样的，避免重复枚举  
+**** 5,5,5,5,16,4,4,4,4,4,3,3,3,3,4 5,5,5,5,16,4,4,4,4,4,3,3,3,3,4
