@@ -129,7 +129,7 @@ div是典型的块元素，用于页面布局
 span是内联元素
 ```
 三.选择器
-(1)标签选择器
+(1)元素选择器
 ```
 p
 {
@@ -151,6 +151,7 @@ p
 ```
 (3)class选择器
 >id只能一句话用，但是class可以多句话共用
+>同时一个元素也可以拥有多个class，使用空格隔开 多类样式声明
 
 ```
 .abc/*通过.选中class*/
@@ -158,7 +159,7 @@ p
 	color:red;
 }
 <p class="abc">测试</p>
-<p class="abc">另一个测试 </p>
+<p class="abc cde">另一个测试 </p>
 ```
 > 一句话可以有多class，中间用空格隔开
 
@@ -203,7 +204,6 @@ div>span
 }
 ```
 
-<h1 style="color:red; ">一共讲了六种选择器，前三种是单体选择器：标签（元素），id，class。后三种是组合：并集，交集，后代</h1>
 
 四.伪类选择器
 伪类专门用来表示元素的一种特殊的状态
@@ -213,26 +213,78 @@ a:link /*未访问过的链接*/
 a:visited/*访问过的链接*/
 a:hover/*鼠标划过的链接*/
 a:active/*鼠标点击时的链接*/
-
-p:first-letter:设置p中第一个字母的样式
-p:first-line:设置p中第一行的样式
-p:first-child:选中既是p也是第一个子元素的元素
-body>p:first-child:选中body的第一个是p的子元素
-p:last-child:最后一个子元素
-body>p:last-child:同上
-p:nth-child(x):选中第x个子元素
-p:nth-child(even):选中第偶数个子元素
-p:nth-child(odd):选中第奇数个子元素
-p:first-of-type:第一个p元素
-p:last-of-type:最后一个p元素
-p:nth-of-type(x):第x个p元素
-
-
-P：before{
-content:"  "  //在整个段落的最前面添加文本
-color:red;//设置该文本的颜色
-}
 ```
+
+## first-child&&first-of-type伪类选择器
+### 四种情况  
+- article :在article中所有的后代选择  
+- article>:在article的下一级中选择  
+- article h1:在article后代中的h1中选择
+- article>h1:article的下一级中的h1选择  
+>注意article可能代表着一个复杂的祖先-后代关系，例如：h1 h2 h3  
+### 对应的两种伪类  
+>first-child:所有的元素中第一个  
+>first-of-type：指定类型中的第一个
+### 示例:
+```
+<style>
+article :first-child{
+background-color: red;
+}
+    </style>
+<body>
+<main>
+       <article>
+           <h1>111111</h1>
+           <aside>
+               <h2>2222222</h2>
+           </aside>
+           <h2>33333333</h2>
+       </article>
+   </main>  
+</body>
+```
+>效果：1111和22222都被选中  
+
+```
+<style>
+article>:first-child{
+background-color: red;
+}
+    </style>
+<body>
+<main>
+       <article>
+           <h1>111111</h1>
+           <aside>
+               <h2>2222222</h2>
+           </aside>
+           <h2>33333333</h2>
+       </article>
+   </main>
+</body>  
+```
+>效果：只有111111被选中，因为限定了只能在下一级中选择  
+```
+article h1:first-child{
+background-color: red;
+}
+    </style>
+</head>
+<body>
+   <main>
+       <article>
+           <h1>111111</h1>
+           <aside>
+               <h2>2222222</h2>
+           </aside>
+           <h2>33333333</h2>
+       </article>
+   </main>
+</body>
+```
+>效果：选择article后代中即是h1也是first-child的，只选中了11111   
+
 五.属性选择器
 > title属性：可以为任何标签打上title属性，title属性会成为该元素的提示文字，当鼠标划过该元素时显示
 
@@ -241,7 +293,7 @@ color:red;//设置该文本的颜色
 >(2)[属性名=“属性值”]：选择属性为属性值的标签,例如：p[title="hello"]
 >(3)[属性名^="x"]：选择title属性值以x开头的属性
 >(4)[属性名$="x"]:选择title属性值以x结尾的属性
->(5)[属性名*="x"]:通配x
+>(5)[属性名*="x"]:通配x（字串而非子序列）
 
 六.文本标签及样式
 
