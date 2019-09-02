@@ -1,10 +1,10 @@
 <font size="5" face="黑体"/>
 
 [1.数据流中位数](https://leetcode-cn.com/problems/find-median-from-data-stream/)
-- **关键思路**：先插入再调整（调整可以单独封装成一个函数）
+- **关键思路**：先插入再调整
   大根堆和小根堆容量一样-->插入大根堆-->调整
-  大根堆比小根堆容量多-->插入小根堆-->调整
-
+  大根堆比小根堆容量多-->插入小根堆-->调整  
+  **注意：大根堆在上**
 - **调整函数**
 ```
 void exchange(priority_queue<int,vector<int>,greater<int> > &S, priority_queue<int> &B)
@@ -660,4 +660,7 @@ string verify(TreeNode* root)
 ****
 [58.环形子数组的最大和](https://leetcode-cn.com/problems/maximum-sum-circular-subarray/submissions/)
 **思路**：把数组存环，求前缀和，每次找i前面长度为n的滑动窗口的最小值，前缀和相减得到区间和的最大值  
+****
+[59.和为k的子数组](https://leetcode-cn.com/problems/subarray-sum-equals-k/submissions/)  
+**思路**：用hash记录每个前缀和出现的次数，对于当前前缀和pre，他对答案的贡献是hash[pre-k],即pre-k的前缀和出现的次数。注意维护hash即可。  
 ****
