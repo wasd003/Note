@@ -664,3 +664,8 @@ string verify(TreeNode* root)
 [59.和为k的子数组](https://leetcode-cn.com/problems/subarray-sum-equals-k/submissions/)  
 **思路**：用hash记录每个前缀和出现的次数，对于当前前缀和pre，他对答案的贡献是hash[pre-k],即pre-k的前缀和出现的次数。注意维护hash即可。  
 ****
+[60.将数据流变为多个不相交的区间](https://leetcode-cn.com/problems/data-stream-as-disjoint-intervals/submissions/)  
+**思路**：L以每个区间的右端点为key，其对应的左端点为val，R相反。  
+[题解:120min左右](https://www.bilibili.com/video/av65364193?from=search&seid=17562432300971643538)
+**Map的STL用法**：无论是查找还是删除都是以key为标准。  
+****
