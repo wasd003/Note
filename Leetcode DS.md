@@ -31,9 +31,9 @@ void exchange(priority_queue<int,vector<int>,greater<int> > &S, priority_queue<i
 
 使用扫描线算法（应用于柱状图）
 **算法内容：**
->记录矩形每一条边的横坐标以及高，保存到到一个容器里，遍历容器
-- 使用注意：注意重合的边扫描顺序（元素在容器内排列的排序）
-- 关键思路：last记录上一个关键点，更新的条件是：当前最大高度不等于上一个关键点的高度
+>记录矩形每一条边的（x，h）
+- 使用注意：注意重合的边扫描顺序（相同的x，排序的顺序）
+- 关键思路：先把每一条边排序，如果是入点，如果是当前最高，则入点是key point；如果是出点，如果是最高，那么除了出点最高的是key point
 
 ****
 [4.接雨水Ⅱ](https://leetcode-cn.com/problems/trapping-rain-water-ii/)
