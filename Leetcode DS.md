@@ -54,13 +54,68 @@ void exchange(priority_queue<int,vector<int>,greater<int> > &S, priority_queue<i
 
 6.[柱形图中的最大矩形（84）](https://leetcode-cn.com/problems/largest-rectangle-in-histogram/)&&[最大矩形（85）](https://leetcode-cn.com/problems/maximal-rectangle/)
 
->都应用了单调栈：查找一个数组中一个数字往左/右比该数大/小的第一个数字/数字的位置
+- **单调栈的普通应用**：通过一次遍历找到一个元素左/右边第一个比它大/小的元素  
+- **单调栈的进阶应用**：通过一次遍历找到一个元素左&&右边第一个比它大/小的元素  
+进阶应用的缺陷：为了保证每个元素都能出栈，如果是找比该元素小的元素需要在数组末尾插入一个非常小的数；如果是找比该元素大的需要在数组末尾插入一个非常大的数。  
+- **关于取等的问题**：如果是找小/大于等于，就在while循环处加等号；否则如果是找小/大于就不需要加等号
 
-模板题：[496 下一个更大的元素I](https://leetcode-cn.com/problems/next-greater-element-i/)
+84题核心思路：尝试以每一个柱形条的高为矩形的高度，向左右拓展，拓展的长度的求法使用单调栈
 
-- 84题核心思路：尝试以每一个柱形条的高为矩形的高度，向左右拓展，拓展的长度的求法使用单调栈
+85题核心思路：基于84题。先把[0，1]图转化为直方图，然后做法同84。
 
-- 85题核心思路：基于84题。先预处理出dp数组，然后做法同84.详见leetcode官方题解方法Ⅱ：动态规划 - 使用柱状图的优化暴力方法
+**模板题**：[496 下一个更大的元素I](https://leetcode-cn.com/problems/next-greater-element-i/)
+
+使用普通应用解：
+```
+vector<int> nextGreaterElement(vector<int>& nums1, vector<int>& nums2) {
+        unordered_map<int,int>right;
+        vector<int>res;
+        stack<int> stk;
+        const int n=nums2.size();
+        for(int i=n-1;~i;--i)
+        {
+            while(stk.size()&&nums2[i]>nums2[stk.top()])
+            {
+                stk.pop();
+            }
+            right[nums2[i]]=stk.empty()?-1:nums2[stk.top()];
+            stk.push(i);
+        }
+        for(auto x:nums1)
+        {
+            res.push_back(right[x]);
+        }
+        return res;
+    }
+```
+使用进阶应用解：
+```
+vector<int> nextGreaterElement(vector<int>& nums1, vector<int>& nums2) {
+        const int n=nums2.size();
+        const int inf=0x3f3f3f3f;
+        vector<int>res;
+        stack<int> stk;
+        nums2.push_back(inf);//为了保证每一个元素都能够出栈，需要在数组最后插入一个足够大的元素
+        unordered_map<int,int> right;
+        unordered_map<int,int> left;
+        for(int i=0;i<=n;++i)
+        {
+            while(stk.size()&&nums2[i]>nums2[stk.top()])
+            {
+                int cur=stk.top();
+                stk.pop();
+                right[nums2[cur]]=nums2[i]==inf?-1:nums2[i];//cur右边第一个比它大的元素就是i
+                left[nums2[cur]]=stk.empty()?-1:nums2[stk.top()];//cur左边第一个比它大的元素就是栈顶元素
+            }
+            stk.push(i);
+        }
+        for(auto x:nums1)
+        {
+            res.push_back(right[x]);
+        }
+        return res;
+    }
+```
 ****
 [7.基本计算器](https://leetcode-cn.com/problems/basic-calculator/)
 
@@ -391,7 +446,7 @@ void dfs(int u, int p)
         vector<int>res;
         if(!root) return res;
         auto p=root;
-        while(p||s.size())
+        while(p||s.size())//这个判断条件加||p的原因是一开始s是空的，如果不加无法进入循环
         {
             while(p)
             {
