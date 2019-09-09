@@ -195,9 +195,11 @@ int dep(TreeNode* root)
     }
 ```
 ****
-[10.树中距离之和](https://leetcode-cn.com/problems/sum-of-distances-in-tree/comments/)
+[10.树中距离之和](https://leetcode-cn.com/problems/sum-of-distances-in-tree/comments/)  
 
->还不会qaq
+**思路**:
+1. 将无根树看作以0为根的有根树，dfs更新出sum【u】(以u为结点的子树路径之和)和num【u】(以u为结点的子树节点数量，包括u自身)
+2. 从0号结点开始bfs，逐渐扩展到子节点，每次根据公式求出当前结点的距离之和。公式：设u为当前结点，p为父节点，则sum【u】=sum【p】+N-2*num【u】。
 
 ****
 [11.从先序遍历还原二叉树](https://leetcode-cn.com/problems/recover-a-tree-from-preorder-traversal/) 
@@ -209,13 +211,16 @@ int dep(TreeNode* root)
 
 - 新序列的左端点是 x-left，更新哈希表：tr_left[x - left] = max(tr_left[x - left], left + 1 + right);
 - 新序列的右端点是 x+right，更新哈希表：tr_right[x + right] = max(tr_right[x + right], left + 1 + right);
-- 同时不要忘记更新ans
-- ****
+> 问题：为什么要取max？  
+这道题虽然代码短，但是思路很巧妙，值得好好琢磨。
+ 
+****
 [13.k个一组反转链表](https://leetcode-cn.com/problems/reverse-nodes-in-k-group/)
 没什么好总结的，就是边界条件比较墨迹。多调试调试就A了
 ****
 [14.从二叉树到更大和树](https://leetcode-cn.com/problems/binary-search-tree-to-greater-sum-tree/submissions/)
-很简单
+因为二叉搜索树的中序遍历是一个递增的序列，所以如果按照右-根-左的顺序dfs，就是一个递减的序列。在遍历这个递减序列的过程中维护当前累加和sum即可。  
+
 ****
 [15.在排序数组中查找元素的第一个和最后一个位置](https://leetcode-cn.com/problems/find-first-and-last-position-of-element-in-sorted-array/)
 
@@ -250,8 +255,8 @@ int dep(TreeNode* root)
 >(1)考虑数组为空的情况
 >(2)考虑数组中只有一个元素的情况
 >(3)考虑数组中只有两个元素的情况
->(4)考虑数组的极端情况，比如全是“...”或者没有"..."（...是题目的具体特性，如本题数组中所有元素都是val，再比如旋转数组根本没有旋转：nums[0]<nums[n]）
-
+>(4)考虑数组的极端情况，比如全是“...”或者没有"..."（...是题目的具体特性，如本题数组中所有元素都是val，再比如旋转数组根本没有旋转：nums[0]<nums[n]）  
+简记：0 1 2 全无
 ****
 [17.寻找重复数](https://leetcode-cn.com/problems/find-the-duplicate-number/submissions/)
 **核心思路：**二分的不是区间而是答案，所以从[1,n]开始二分，如果在[x,y]区间内的数字个数超过y-x+1那么在[x,y]内存在答案
@@ -670,12 +675,6 @@ string verify(TreeNode* root)
 编码结果：树的前序遍历，空节点用#表示，每个节点之间用逗号隔开，字符串最后没有逗号
 比如[1,2,3,NULL,NULL,NULL,NULL]的编码为
 1，2，#，#，3，#，#
-****
-[51.树中距离之和](https://leetcode-cn.com/problems/sum-of-distances-in-tree/submissions/)  
-**思路**:
-1. 将无根树看作以0为根的有根树，dfs更新出sum【u】(以u为结点的子树路径之和)和num【u】(以u为结点的子树节点数量，包括u自身)
-2. 从0号结点开始bfs，逐渐扩展到子节点，每次根据公式求出当前结点的距离之和。公式：设u为当前结点，p为父节点，则sum【u】=sum【p】+N-2*num【u】。
-
 ****
 [52.全排列Ⅱ](https://leetcode-cn.com/problems/permutations-ii/)  
 **思路**：每一轮选择的时候不能选择重复的元素，例如这一轮已经选过10了，那么在之后的循环过程中如果又遇见10就不用再选了。
