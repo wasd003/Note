@@ -30,7 +30,7 @@ void exchange(priority_queue<int,vector<int>,greater<int> > &S, priority_queue<i
 [3.天际线问题（难题）](https://leetcode-cn.com/problems/the-skyline-problem/)
 
 使用扫描线算法（应用于柱状图）
-**算法内容：**
+**算法内容**：
 >记录矩形每一条边的（x，h）
 - 使用注意：注意重合的边扫描顺序（相同的x，排序的顺序）
 - 关键思路：先把每一条边排序，如果是入点，如果是当前最高，则入点是key point；如果是出点，如果是最高，那么除了出点最高的是key point
@@ -122,7 +122,6 @@ vector<int> nextGreaterElement(vector<int>& nums1, vector<int>& nums2) {
 >考察中缀表达式转化成后缀表达式以及计算后缀表达式的方法
 
 ****
-
 [8.恢复二叉搜索树](https://leetcode-cn.com/problems/recover-binary-search-tree/)
 - 层序创建一棵二叉树
 ```
@@ -251,7 +250,7 @@ int dep(TreeNode* root)
 ```
 ****
 [16.移除元素](https://leetcode-cn.com/problems/remove-element/submissions/)
-**数组问题考虑全面：**
+**数组问题考虑全面**：
 >(1)考虑数组为空的情况
 >(2)考虑数组中只有一个元素的情况
 >(3)考虑数组中只有两个元素的情况
@@ -259,17 +258,17 @@ int dep(TreeNode* root)
 简记：0 1 2 全无
 ****
 [17.寻找重复数](https://leetcode-cn.com/problems/find-the-duplicate-number/submissions/)
-**核心思路：**二分的不是区间而是答案，所以从[1,n]开始二分，如果在[x,y]区间内的数字个数超过y-x+1那么在[x,y]内存在答案
+**核心思路**：二分的不是区间而是答案，所以从[1,n]开始二分，如果在[x,y]区间内的数字个数超过y-x+1那么在[x,y]内存在答案
 ****
 [18.被围绕的区域](https://leetcode-cn.com/problems/surrounded-regions/)
-**核心思路：**先把四周的零及其联通块变成#，然后遍历棋盘，#->O,O->X
+**核心思路**：先把四周的零及其联通块变成#，然后遍历棋盘，#->O,O->X
 ****
 [19.等式方程的可满足性](https://leetcode-cn.com/problems/satisfiability-of-equality-equations/submissions/)
-- **并查集：**
+- **并查集**：
 > (1)并查集的本质  
 > (2)ufs[x]的意义：如果ufs[x]>0，那么表示的是x的同伴的编号，如果ufs[x]<0，那么表明x是根，abs(ufs[x])表示该集合中点的个数
 
-**code：**
+**code**：
 ```
 int ufs[maxn];
 int Find(int x)
@@ -298,7 +297,7 @@ int Count(int x)
 *这道题思路比较奇特，把一个1x1的小块分成上下左右四个区域，先根据符号合并这个小块，再合并1x1的小块上边的小块和左边的小块*
 ****
 [21.冗余连接](https://leetcode-cn.com/problems/redundant-connection/submissions/)
-**核心思路：**
+**核心思路**：
 对于同一棵树的所有节点来说，都拥有共同的祖先节点。因此，判断冗余连接的条件即为，判断新加入的边，两个节点是否有共同的祖先。
 （1）如果有共同的祖先，则说明这条边是冗余的边；
 （2）如果没有共同的祖先，则说明这两条边并未加入树中，因此进行合并操作。
@@ -337,15 +336,15 @@ void dfs(int u, int p)
 2. 找到答案的条件是vis[u]==2，即一个点找到了两次（这里vis表示的意思是遇到了几次）
 3. 使用is_ok，搜到答案后直接return，不要继续搜索
 4. 调用的方法：vis[1]=1,path.push_back(1),dfs(1,-1);
-**记忆点：**(u,p),vis,is_ok
+**记忆点**：(u,p),vis,is_ok
 ****
 [22.分割数组以得到最大和](https://leetcode-cn.com/problems/partition-array-for-maximum-sum/submissions/)
-**核心思路：**以f(i)表示前i个元素分割得到的最大值，枚举最后一个区间的长度j从1到k
+**核心思路**：以f(i)表示前i个元素分割得到的最大值，枚举最后一个区间的长度j从1到k
 ****
 [23.最小高度树](https://leetcode-cn.com/problems/minimum-height-trees/submissions/)（经典）
-**核心思路：**贪心删点，每一轮删除叶子节点，直至只剩下一个或者两个节点就是答案。（因为越外侧的点，度数越少的点越不可能是答案）
-**代码实现关键点：**BFS的时候每次进行一轮
-**正确code：**
+**核心思路**：贪心删点，每一轮删除叶子节点，直至只剩下一个或者两个节点就是答案。（因为越外侧的点，度数越少的点越不可能是答案）
+**代码实现关键点**：BFS的时候每次进行一轮
+**正确code**：
 ```
 		while(cnt!=n-2&&cnt!=n-1)
         {
@@ -365,7 +364,7 @@ void dfs(int u, int p)
             }
 		}
 ```
-**错误code：**
+**错误code**：
 ```
 		while(cnt!=n-2&&cnt!=n-1)
         {
@@ -388,14 +387,14 @@ void dfs(int u, int p)
 考察SPFA,FLOYD,BELLMAN-FORD算法模板，但是感觉样例有点问题
 ****
 [25.找到最终的安全状态](https://leetcode-cn.com/problems/find-eventual-safe-states/submissions/)
-**核心思路：**本题就是相当于在有向图中把环剔除出去，先把图反向存储再拓扑排序即可
+**核心思路**：本题就是相当于在有向图中把环剔除出去，先把图反向存储再拓扑排序即可
 
 <p style="color:red">问题：为什么需要先反向存储再拓扑排序？？以题目中的样例为例，如果不反向存储那么就无法完成拓扑排序，删掉4和6后没有入度为0的点</p>
 
 ![](https://s3-lc-upload.s3.amazonaws.com/uploads/2018/03/17/picture1.png)
 ****
 <a href="https://leetcode-cn.com/problems/maximum-frequency-stack/submissions/">26.最大频率栈</a>
-**核心思路：**一个map存储元素每一个元素出现的频率（freq），一个map存储某一频率对应的所有元素(element):
+**核心思路**：一个map存储元素每一个元素出现的频率（freq），一个map存储某一频率对应的所有元素(element):
 ```map<int,stack<int> >```
 <hr/>
 <a href="https://leetcode-cn.com/problems/palindrome-pairs/submissions/">27.回文串</a>
@@ -723,3 +722,35 @@ string verify(TreeNode* root)
 [题解:120min左右](https://www.bilibili.com/video/av65364193?from=search&seid=17562432300971643538)
 **Map的STL用法**：无论是查找还是删除都是以key为标准。  
 ****
+[61.排序数组](https://leetcode-cn.com/problems/sort-an-array/submissions/)  
+1. 快排  
+```
+ 	int partition(vector<int>&nums,int l,int r)
+    {
+        int index=nums[l];
+        int pos=l;
+        for(int i=l+1;i<=r;++i)
+        {
+            if(nums[i]<=nums[l])
+            {
+                pos++;
+                swap(nums[pos],nums[i]);
+            }
+        }
+        swap(nums[l],nums[pos]);
+        return pos;
+    }
+    void quicksort(vector<int>&nums,int l,int r)
+    {
+        if(l>=r) return;
+        int pos=partition(nums,l,r);
+        quicksort(nums,l,pos-1);
+        quicksort(nums,pos+1,r);
+        return;
+    }
+    vector<int> sortArray(vector<int>& nums) {
+        const int n=nums.size();
+        quicksort(nums,0,n-1);
+        return nums;
+    }
+```

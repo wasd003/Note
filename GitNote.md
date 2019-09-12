@@ -109,6 +109,7 @@ git rebase master
 添加远程主机  
 ```
 git remote add origin 远程仓库地址
+git remote rm origin 删除origin
 ```
 >为本地仓库添加关联的远程仓库地址
 ### Clone
