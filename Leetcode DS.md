@@ -753,4 +753,28 @@ string verify(TreeNode* root)
         quicksort(nums,0,n-1);
         return nums;
     }
+```  
+****  
+[62.数值的整数次方](https://www.acwing.com/problem/content/26/)
+属于模板  
+**注意区分指数的奇偶和正负**  
 ```
+ double Power(double base, int exponent) {
+        if(!exponent) return (double)1;
+        bool is_negative=exponent<0;
+        exponent=abs(exponent);//这一句容易忘了写
+        if(exponent&1)
+        {
+            double res=Power(base,exponent-1>>1);
+            if(!is_negative) return (double)res*res*base;
+            else return (double)1/(res*res*base);
+        }
+        else
+        {
+            double res=Power(base,exponent>>1);
+            if(!is_negative)return (double)res*res;
+            else return (double)1/(res*res);
+        }
+    }
+```  
+****

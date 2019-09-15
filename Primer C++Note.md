@@ -242,9 +242,21 @@ int main()
 	return 0;
 }
 ```
-2. 可以使用fstream类的对象作为iostream&的实参。即：一个接受istream&的函数可以用一个ifstream对象来调用
+2. 可以使用fstream类的对象作为iostream&的实参。即：一个接受istream&的函数可以用一个ifstream对象来调用  
 
-		
 
+****  
+重载运算符：  
+1. 比较类运算符（==，!=，>,<等）返回的是bool值，参数是（const type&rhs）,const函数  
+2. 运算类运算符(+,-,x,/等)返回的是拷贝，参数是（const type&rhs），非const函数  创建一个临时对象，返回的是这个临时对象  
+3. 赋值类运算符（=，+=,-=,x=,/=）返回的是引用，参数是（const type&rhs）,非const函数  
+4. IO类 返回的是istream&或者ostream&,参数是I/Ostream&和const type &rhs，非const函数，必须写成友元函数，即添加friend关键字
+****	
+模板类的编写方式  
+1. .cpp文件中，每写一个函数都要声明一遍template .h在class开头也要声明一遍
+2. 类的名称不再是name，而是name<Type>
+3. **模板类的多文件编写**：如果像普通的类一样多文件编写会出现链接错误[原因](https://www.cnblogs.com/lovemee/p/10706061.html)  
+**解决方法**：模板类尽量不要多文件编写，把声明和定义写在一起编成一个.hpp文件（.hpp文件是将.h文件和.cpp文件混合编写的文件）。在主函数中include"name.hpp"即可
+****
 
 
