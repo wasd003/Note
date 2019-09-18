@@ -162,7 +162,7 @@ TreeNode* create()
 
 [9.二叉树中的最大路径和](https://leetcode-cn.com/problems/binary-tree-maximum-path-sum/)&&[二叉树的直径](https://leetcode-cn.com/problems/diameter-of-binary-tree/submissions/)
 
-**核心思路**：这两道题在实现的时候会用到一个共同的技巧：
+**核心思路**：对于从二叉树的任意一点到任意一点的题目code写法
 dfs函数同时做两件事：
 (1)计算从root开始向左**或者**向右的最大路径和或者最长路径长度
 (2)更新以root为根节点的最大路径和或者最长路径长度
@@ -294,7 +294,8 @@ int Count(int x)
 [20.用斜杠划分区域](https://leetcode-cn.com/problems/regions-cut-by-slashes/submissions/)
 [题解](https://blog.csdn.net/qq_17550379/article/details/85262219)
 
-*这道题思路比较奇特，把一个1x1的小块分成上下左右四个区域，先根据符号合并这个小块，再合并1x1的小块上边的小块和左边的小块*
+**做法**：把一个1x1的小块分成上下左右四个区域，**并且按照顺序给这些小块依次编号**。先根据符号合并这个小块，再合并1x1的小块上边的小块和左边的小块 
+**思考**：**在二维棋盘中使用并查集的方法**：给每一个格子编号，即把二维矩阵顺序展开成为一维。
 ****
 [21.冗余连接](https://leetcode-cn.com/problems/redundant-connection/submissions/)
 **核心思路**：
@@ -383,13 +384,10 @@ void dfs(int u, int p)
 		}
 ```
 ****
-[24.网络延迟时间](https://leetcode-cn.com/problems/network-delay-time/)
-考察SPFA,FLOYD,BELLMAN-FORD算法模板，但是感觉样例有点问题
-****
 [25.找到最终的安全状态](https://leetcode-cn.com/problems/find-eventual-safe-states/submissions/)
-**核心思路**：本题就是相当于在有向图中把环剔除出去，先把图反向存储再拓扑排序即可
+**核心思路**：本题本质上是找出度为0的点。删掉当前出度为0的点然后再删新一轮出度为0的点。  
+但是由于从终点找不到起点，所以采用该算法的等价实现：将图反向存以后拓扑排序。
 
-<p style="color:red">问题：为什么需要先反向存储再拓扑排序？？以题目中的样例为例，如果不反向存储那么就无法完成拓扑排序，删掉4和6后没有入度为0的点</p>
 
 ![](https://s3-lc-upload.s3.amazonaws.com/uploads/2018/03/17/picture1.png)
 ****
@@ -514,70 +512,118 @@ for (int k = 1; k <= n; k++)
 <br/><br/>
 
 >(2)单源最短路(两点最短路与单源最短路复杂度相同)
-假设：N个点M条边 &nbsp;&nbsp;(u,v,w)表示从u到v有一条权值为w的边
 
-
->带负权：**Bellman - Ford**
-**核心**：N个点松弛N-1次，每次考虑一条边
-```
-d[0] = 0;
-for (int i = 1; i < N; i++) d[i] = 0x3f3f3f3f;
-while ((N - 1)--)//松弛N-1次
-{
-	for (int i = 0; i < M; i++)//考虑每条边
-	{
-		int x = u[i], y = v[i];
-		d[y] = min(d[y], d[x] + w[i]);
-	}
-}
-```
-<br/>
 >不带负权:**Dijkstra**
 
-><a href="https://www.luogu.org/problem/P4779">模板题</a>
+[模板题](https://leetcode-cn.com/problems/network-delay-time/submissions/)  
+**代码实现的两个细节**：  
+1. edge有两个作用：(1)存图 (2)堆中储存K到id点的最短路径  
+2. 判断vis[u]==false以后立即vis[u]=true  
+
 ```
-	cin >> N >> M >> S;
-	for (int i = 1, u, v, w; i <= M; i++)
-	{
-		scanf("%d %d %d", &u, &v, &w);
-		g[u].push_back(Edge(v, w));//带权图的存图方式
-	}
-	memset(dis, 0x3f3f3f3f, sizeof dis);
-	dis[S] = 0;
-	for (int i = 1; i <= N; i++)
-	{
-		if (i != S)
-		{
-			q.push(Node(i, 0x3f3f3f3f));
-		}
-		else {
-			q.push(Node(i, 0));
-		}
-	}
-	while (q.size())
-	{
-		Node f = q.top();
-		q.pop();
-		if (vis[f.u]) continue;
-		vis[f.u] = 1;
-		for (auto next : g[f.u])
-		{
-			if (f.d + next.dist < dis[next.to])
-			{
-				dis[next.to] = f.d + next.dist;
-				q.push(Node(next.to, dis[next.to]));
-			}
-		}
-	}
-	for (int i = 1; i <= N; i++)
-	{
-		printf("%d ", dis[i]);
-	}
+	struct edge
+    {
+        int id;
+        int dist;
+        edge(int id,int dist):id(id),dist(dist){}
+        bool operator<(const edge&rhs) const
+        {
+            return dist>rhs.dist;
+        }
+    };
+    int networkDelayTime(vector<vector<int>>& times, int N, int K) {
+        const int inf=0x3f3f3f3f;
+        vector<edge> g[N+1];
+        vector<bool> vis(N+1,false);
+        vector<int> f(N+1,inf);
+        f[K]=0;
+        for(const auto &e:times)
+        {
+            g[e[0]].push_back(edge(e[1],e[2]));
+        }
+        priority_queue<edge> heap;
+        heap.push(edge(K,0));
+        while(heap.size())
+        {
+            auto s=heap.top();
+            heap.pop();
+             if(vis[s.id]) continue;
+            vis[s.id]=true;
+            for(auto &next:g[s.id])
+            {
+                if(f[next.id]>f[s.id]+next.dist)
+                {
+                    f[next.id]=f[s.id]+next.dist;
+                    heap.push(edge(next.id,f[next.id]));
+                }
+            }
+        }
+        int res=0;
+        for(int i=1;i<=N;++i)
+        {
+            res=max(res,f[i]);
+        }
+        return res==inf?-1:res;
+    }
+```  
+>带负权：**SPFA**
+与dijkstra相比主要的区别在于由于有负权，所以不能只算过一次就不算了。即：不能if(vis[u]) continue。  
+正确做法是使用is_in数组，保证队列中始终只有一个该元素
+```
+struct edge
+    {
+        int id;
+        int dist;
+        edge(int id,int dist):id(id),dist(dist){}
+        bool operator<(const edge&rhs) const
+        {
+            return dist>rhs.dist;
+        }
+    };
+    int networkDelayTime(vector<vector<int>>& times, int N, int K) {
+        const int inf=0x3f3f3f3f;
+        vector<edge> g[N+1];
+        vector<bool> is_in(N+1,false);
+        vector<int> f(N+1,inf);
+        f[K]=0;
+        is_in[K]=true;
+        for(const auto &e:times)
+        {
+            g[e[0]].push_back(edge(e[1],e[2]));
+        }
+        queue<edge> q;
+        q.push(edge(K,0));
+        while(q.size())
+        {
+            auto s=q.front();
+            q.pop();
+            is_in[s.id]=false;
+            for(auto &next:g[s.id])
+            {
+                if(f[next.id]>f[s.id]+next.dist)
+                {
+                    f[next.id]=f[s.id]+next.dist;
+                    if(!is_in[next.id])
+                    {
+                        is_in[next.id]=true;
+                        q.push(edge(next.id,f[next.id]));
+                    }
+                }
+            }
+        }
+        int res=0;
+        for(int i=1;i<=N;++i)
+        {
+            res=max(res,f[i]);
+        }
+        return res==inf?-1:res;
+    }
 ```
 ****
 
 [37.最长重复字串](https://leetcode-cn.com/problems/longest-duplicate-substring/solution/zui-chang-zhong-fu-zi-chuan-by-leetcode/)
-字符串编码
+字符串编码  
+
 <ul><li>优点：将字符串比较从O(L)降至O(1)</li>
 <li>编码方式：将字符串看作一个26进制数，然后将其转化为十进制</li>
 <li>应用场景：字符串匹配问题</li>
