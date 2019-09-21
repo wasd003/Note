@@ -397,22 +397,29 @@ void dfs(int u, int p)
 <hr/>
 <a href="https://leetcode-cn.com/problems/palindrome-pairs/submissions/">27.回文串</a>
 <a href="https://www.acwing.com/solution/LeetCode/content/363/">题解</a>
-**启示：判断两个字符串能否组成回文串的方法：枚举分割点：分成左相等，右回文和左回文，右相等两种情况**
+
+启示：判断两个字符串能否组成回文串的方法：枚举分割点：分成**左相等，右回文和左回文，右相等两种情况**  
+**注意要分成两种情况，因为可能是ab这样拼也可能是ba这样拼**  
+**代码细节**：由于枚举分界点的范围是0-n-1,所以如果words中一个回文串a和空字符串b，那么只会统计到{a,b}这种情况，但是会忽略{b,a}这种情况。所以需要事先遍历一遍，特判{b,a}这种情况。
 <hr/>
 
 <a href="https://leetcode-cn.com/problems/odd-even-jump/submissions/">28.奇偶跳</a>
->(1)查找数组中第i个元素右侧比他大的元素中最小的那一个（或者比他小的元素中最大的那一个）的位置的方法：倒序枚举，用堆来自动排序后进行二分查找：O（NlogN）  
->(2)set/multiset中upper/lower_bound的使用：
->与一般的泛型算法中的upper/lower_bound不同的是：set中的二分查找不需要传容器的迭代器，只需要传查找的元素
->lower_bound:返回的是等于或者比tar大一点点的元素的迭代器
->upper_bound:返回的是比tar大一点点的元素的迭代器
+
+(1)**查找数组中第i个元素右侧比他大的元素中最小的那一个（或者比他小的元素中最大的那一个）的位置的方法**：argsort后找右边第一个index大于当前元素index的就是右侧比他大的元素中最小的那一个，左边第一个index大于当前元素的就是右侧比他小的元素中最大的那一个。  
+(2)本题代码细节：因为偶数跳的时候多个相同的值需要跳到最小的位置上去，所以需要分情况讨论：奇数情况值相同，index递增排序，偶数情况值相同index递减排序。
+(3)set/multiset中upper/lower_bound的使用：
+与一般的泛型算法中的upper/lower_bound不同的是：set中的二分查找不需要传容器的迭代器，只需要传查找的元素
+lower_bound:返回的是等于或者比tar大一点点的元素的迭代器
+upper_bound:返回的是比tar大一点点的元素的迭代器
 <p style="color:red;">这里的大一点点指的是大于的元素中最小的那一个</p>  
 
 ****
 
 [29.去除重复字母](https://leetcode-cn.com/problems/remove-duplicate-letters/submissions/)
 [题解](https://www.acwing.com/solution/LeetCode/content/93/)
-**原来string有pop_back()这个操作吼吼**
+**贪心思路**：尽量维护一个单调递增的序列，除非要pop的字母已经没有了(cnt[x-'a']<=0)。  
+**注意**：如果当前字母已经出现在res串中，cnt--后直接continue，跳过对该字母的处理。  
+因为res是递增的，当前字母如果已经出现在res串中，要么是在res串中间，要么在末尾，如果在末尾：处理和不处理结果一样，如果在串中间：处理后当前字母会变成串的末尾，情况只能变得更差。
 ****
 [30.雇佣k名工人的最低成本](https://leetcode-cn.com/problems/minimum-cost-to-hire-k-workers/submissions/)
 <p style="color:red;">重要题目：拓展贪心思路</p>  

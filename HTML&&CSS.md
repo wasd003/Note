@@ -109,6 +109,16 @@ Username: <input type="text" name="user">
 </form>
 ```
 **对于submit，value定义按钮上的显示文本**    
+- **单选框**  
+```
+<input type="radio"/>
+```
+这句表现在页面上就是一个可选择的小圆点  
+为多个选项添加共同的name属性，可以使得一次只能在多个选项中选择一个。  
+ ```
+男<input type="radio" name="gender"/>
+女<input type="radio" name="gender"/>
+ ```
 ###4. textarea标签  
 ```
 <textarea rows="" cols="">
@@ -248,4 +258,269 @@ Username: <input type="text" name="user">
 form：表单，用户在表单中填写数据然后提交到服务器上。表单中可以包含input元素比如文本字段 复选框 单选框 提交按钮    
 **表单是块级元素**
 label：把自己和其他元素关联起来，这样点击label就相当于点击了关联元素[示例](https://www.jianshu.com/p/59b63d07ab04)  
-**关联的方式就是把要关联的元素嵌套进label中**
+**关联的方式就是把要关联的元素嵌套进label中**  
+
+<center><h2>第十一课 Table进阶</h2></center>
+
+
+### 1. 完整的table结构  
+包含thead，tbody，tfoot。thead和tfoot中有tr，tr中有th；tbody中有tr，tr中有td。  
+
+### 2.居中的写法  
+对于标签元素使用margin：0 auto居中；对于文字内容使用text-align:center居中。  
+### 3.选择器选中同一元素  
+当多个选择器选中了同一元素，并对相同的样式声明了不同的属性，听最下面那个选择器的。  
+```
+.div{
+	color:red;
+}
+.div{
+	color:blue;
+}
+<div>测试</div>
+```
+结果是蓝色。  
+
+### 4. 表格中跨多格元素的写法  
+设置td元素的colspan属性  
+- 横跨
+```
+ <td colspan="5">该元素会横跨五格</td>
+```  
+- 竖跨  
+```
+ <td rowspan="5">该元素会横跨五格</td>
+```  
+### 5.把表格中多条竖线合并成一条  
+```
+ border-collapse:collapse;
+```
+### 5.伪类选择器  
+- nth-child  
+```
+div:nth-child(1)  
+选中div元素下第一个子元素
+div:nth-child(even)
+选中div元素下排名为偶数的子元素 
+```
+注意：**排名是从1开始算起的**  
+- hover  
+鼠标滑过时选中  
+
+##项目示例--课程表  
+```
+<style>
+        table,tr,td,th{
+            border:solid 1px blueviolet;
+            width:600px;
+            border-collapse:collapse;
+            margin:0 auto;
+        }
+        td{
+            text-align: center;
+        }
+       td:hover{
+           background-color:yellowgreen;
+           color:white;
+       }
+        li{
+            text-align:left;
+        }
+        tr:nth-child(even)
+        {
+            background-color: blueviolet;
+            color:white;
+        }
+    }
+    </style>
+    
+</head>
+<body>
+        <table>
+           <thead>
+                <tr>
+                        <th></th>
+                        <th>周一</th>
+                        <th>周二</th>
+                        <th>周三</th>
+                        <th>周四</th>
+                        <th>周五</th>
+                    </tr>
+           </thead>
+           <tbody>
+                <tr>
+                        <td rowspan="3">上午</td>
+                        <td>语文</td>
+                        <td>英语</td>
+                        <td>数学</td>
+                        <td>体育</td>
+                        <td>生物</td>
+                </tr>
+                <tr>
+                        <td>物理</td>
+                        <td>化学</td>
+                        <td>生物</td>
+                        <td>数学</td>
+                        <td>语文</td>
+                </tr>
+                <tr>
+                        <td>语文</td>
+                        <td>物理</td>
+                        <td>物理</td>
+                        <td>体育</td>
+                        <td>数学</td>
+                </tr>
+                <tr>
+                    <td colspan="6">午休</td>
+                </tr>
+                <tr>
+                        <td rowspan="4">下午</td>
+                        <td>物理</td>
+                        <td>化学</td>
+                        <td>生物</td>
+                        <td>数学</td>
+                        <td>语文</td>
+                </tr>
+                <tr>
+                        <td>物理</td>
+                        <td>化学</td>
+                        <td>生物</td>
+                        <td>数学</td>
+                        <td>语文</td>
+                </tr>
+                <tr>
+                        <td>物理</td>
+                        <td>化学</td>
+                        <td>生物</td>
+                        <td>数学</td>
+                        <td>语文</td>
+                </tr>
+                <tr>
+                    <td colspan="5">班会</td>
+                </tr>
+           </tbody>
+           <tfoot>
+            <tr>
+                <th>备注</th>
+                <th colspan="5">
+                    <ol>
+                        <li>第一点</li>
+                        <li>第二点</li>
+                        <li>第三点</li>
+                    </ol>
+                </th>
+            </tr>
+           </tfoot>
+        </table>
+</body>
+```
+
+<center><h2>第十二课 表单进阶</h2></center>  
+
+
+### 下拉列表 
+```
+<select name="" id="">
+        <option>选择一</option>
+        <option>选择二</option>
+</select>
+```  
+### 给边框加圆角  
+```
+border-radius: 5px;
+```  
+### 属性选择器
+例子：  
+```
+input[type="text"]
+```
+选择input标签中type属性是text的标签  
+### display样式
+block：类似div,不同元素在不同行  
+inline：类似span，不同元素在同一行并且紧挨着  
+inline-block:不同元素在同一行但是之间有间隔  
+### 常用技巧  
+先给各个元素加上border，便于识别每一个区域，写好以后再去掉。  
+### 项目示例-调查问卷  
+```
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        div{
+            margin:0 auto;
+            width: 50%;
+        }
+        span{
+            width:150px;
+            display: inline-block;
+            text-align: right;
+        }
+        form{
+            border:dashed 3px blueviolet;
+            border-radius: 5px;
+            margin:20px;
+            padding:20px;
+        }
+        h1{
+            text-align: center;
+            color:blueviolet;
+        }
+        .SubMit{
+            color:white;
+            background-color: blueviolet;
+            width:100px;
+            height:30px;
+            border-radius: 10px;
+        }
+        textarea{
+            width:200px;
+        }
+        input[type="text"]
+        {
+            width:200px;
+        }
+    </style>
+</head>
+<body>
+    <form action="#">
+        <h1>意见反馈</h1>
+        <div>
+            <span>姓名:</span>
+            <input type="text">
+        </div>
+        <div>
+            <span>选择您的性别:</span>
+            <input type="radio" name="gender">男
+            <input type="radio" name="gender">女
+        </div>
+        <div>
+            <span>选择你的爱好:</span>
+            <input type="checkbox">看书
+            <input type="checkbox">跑步
+            <input type="checkbox">音乐
+        </div>
+        <div>
+            <span>学历程度:</span>
+            <select name="" id="">
+                <option value="">大专</option>
+                <option value="">本科</option>
+                <option value="">研究生</option>
+            </select>
+        </div>
+        <div>
+            <span>反馈意见:</span>
+            <textarea name="" id="" cols="30" rows="10"></textarea>
+        </div>
+        <div>
+            <input type="submit" value="提交" class="SubMit">
+        </div>
+
+    </form>
+</body>
+</html>
+```
