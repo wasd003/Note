@@ -27,7 +27,7 @@ void exchange(priority_queue<int,vector<int>,greater<int> > &S, priority_queue<i
 ****
 
 
-[3.天际线问题（难题）](https://leetcode-cn.com/problems/the-skyline-problem/)
+[3.天际线问题](https://leetcode-cn.com/problems/the-skyline-problem/)
 
 使用扫描线算法（应用于柱状图）
 **算法内容**：
@@ -204,6 +204,7 @@ int dep(TreeNode* root)
 [11.从先序遍历还原二叉树](https://leetcode-cn.com/problems/recover-a-tree-from-preorder-traversal/) 
 **核心思路**:先取出字符串中第一个数字作为根节点，然后把剩余字符串的每一个横线部分减一，并且将其分为左右两部分，递归生成左右子树
 ****
+<center><h2>难写</h2></center>
 
 [12.最长连续序列](https://leetcode-cn.com/problems/longest-consecutive-sequence/submissions/)
 **核心思路**：维护两个哈希表unordered_map<int,int> left,right.其中left[i]记录以i为序列左端点的最长长度，right同理。当我们遍历到一个新的数 x 时，先查找 x 左右两边分别存在多长的连续序列，两个值分别是right[x-1]和left[x+1]，分别记为left和right，此时我们可以将左右两部分和 x 拼起来，形成一个更长的连续整数序列，然后更新新序列的左右两端的值：
@@ -395,6 +396,7 @@ void dfs(int u, int p)
 **核心思路**：一个map存储元素每一个元素出现的频率（freq），一个map存储某一频率对应的所有元素(element):
 ```map<int,stack<int> >```
 <hr/>
+<center><h2>难写</h2></center>
 <a href="https://leetcode-cn.com/problems/palindrome-pairs/submissions/">27.回文串</a>
 <a href="https://www.acwing.com/solution/LeetCode/content/363/">题解</a>
 
@@ -414,6 +416,7 @@ upper_bound:返回的是比tar大一点点的元素的迭代器
 <p style="color:red;">这里的大一点点指的是大于的元素中最小的那一个</p>  
 
 ****
+<center><h2>难写</h2></center>
 
 [29.去除重复字母](https://leetcode-cn.com/problems/remove-duplicate-letters/submissions/)
 [题解](https://www.acwing.com/solution/LeetCode/content/93/)
@@ -437,13 +440,15 @@ upper_bound:返回的是比tar大一点点的元素的迭代器
 [32.超级丑数](https://leetcode-cn.com/problems/super-ugly-number/submissions/)
 <p style="color:red;">经典题目</p>
 
-每一个质数对应一个指向已生成丑数序列的指针，如果该质数使丑数序列增长，指针后移一位
+每一个质数对应一个指向已生成丑数序列的指针，如果该质数使丑数序列增长，指针后移一位  
+本题可以使用优先队列优化，在优先队列中存放所有质数对应当前的丑数，从中选择最小的，pop后再加入新的。
 ****
 [33.二叉树的最近公共祖先](https://leetcode-cn.com/problems/lowest-common-ancestor-of-a-binary-tree/)
 这是一组题：  
 （1）如果树是二叉搜索树：根据两个tar与root的大小关系递归查找  
 （2）如果不是二叉搜索树但是有指向父节点的指针：等价于寻找两个链表的第一个相交节点  
-（3）如果不是二叉搜索树也没有指向父节点的指针：先从root开始查找到两个tar的路径，然后转化为寻找两个链表的第一个相交节点
+（3）如果不是二叉搜索树也没有指向父节点的指针：先从root开始查找到两个tar的路径，然后转化为寻找两个链表的第一个相交节点  
+**使用迭代器倒序访问vector**：因为v.end()指向的是最后一个元素后面的位置，所以应该是it=v.end()-1，而不是v.end()  
 ****
 [34.树的中序遍历](https://leetcode-cn.com/problems/binary-tree-inorder-traversal/)
 两个要点：  
@@ -641,11 +646,14 @@ struct edge
 [38.字母异位词分组](https://leetcode-cn.com/problems/group-anagrams/submissions/)  
 1. map的查询除了使用下标还可以用find函数，如果返回的是end()说明key没有对应的value  
 2. 字母异位词的判断：排序后相同表示是字母异位词
-****
+****  
+<center><h2>难写</h2></center>
+
 [39.表现良好的最长时间段](https://leetcode-cn.com/problems/longest-well-performing-interval/submissions/)  
 本质上是求一个最长上坡。求法：维护两个数组：minl[i]表示i向左最小的数，maxr[i]表示i向右最大的数。然后使用双指针扫描一遍
 ****
-[40.实现trie](https://leetcode-cn.com/problems/implement-trie-prefix-tree/submissions/)
+[40.实现trie](https://leetcode-cn.com/problems/implement-trie-prefix-tree/submissions/)  
+对trie的理解：**一个带有dummy头节点的多叉链表**
 ****
 [41.索引处的解码字符串](https://leetcode-cn.com/problems/decoded-string-at-index/solution/suo-yin-chu-de-jie-ma-zi-fu-chuan-by-leetcode/)
 <div style="color:red;">没看懂题解qwq</div>  
@@ -660,7 +668,10 @@ struct edge
 [43.132模式](https://leetcode-cn.com/problems/132-pattern/submissions/)  
 
 **算法的正确性**:因为stk中保存的数都是已经遍历过的，所以stk中的数字一定在当前数字的右边。即：stk的数字具有成为“3”的潜质（位置正确),当nums[i]>stk.top()时，可以更新three（因为满足2>3）
-****
+****  
+
+<center><h2>难写</h2></center>
+
 [44.移掉k位数字](https://leetcode-cn.com/problems/remove-k-digits/submissions/)  
 **思路**:维护一个非递减栈，最终栈中剩下的就是答案字符串
 ****

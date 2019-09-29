@@ -1,5 +1,5 @@
 <font size="5" face="黑体"/>
-<center><h1>HTML</h1></center>
+<center><h1>HTML</h1></center>  
 <center><h2>第四课 如何做表格</h2></center>
 
 ```
@@ -523,4 +523,314 @@ inline-block:不同元素在同一行但是之间有间隔
     </form>
 </body>
 </html>
+```
+
+<center><h2>第十三课 CSS进阶</h2></center>
+
+###CSS样式的优先级  
+**默认样式**<**标签样式**(由标签选择器选择到的样式)<**类样式**(由类选择器选择到的样式)<**ID样式**(由ID选择器选择到的样式)<**!important**(添加!important)  
+
+<center><h2>第十四课 排版相关的样式</h2></center>  
+
+### Position属性  
+用于定位，可以设置绝对(absoute,相对于整个页面)和相对(relative,相对于其原始正常的位置)  
+[relative示例](https://www.w3school.com.cn/tiy/t.asp?f=csse_position_relative)
+[absolute示例之使用像素](https://www.w3school.com.cn/tiy/t.asp?f=csse_position_absolute)
+[absolute示例之使用百分比](https://www.w3school.com.cn/tiy/t.asp?f=csse_position_top_percent)  
+**概念精析**：
+1. **relative**是相对它**自身原来的位置**进行偏移而**absolute**是相对于它的**父元素**，如果父元素没有position属性，会继续向上找(**事件冒泡**)。  
+2. 偏移量为百分比：  
+**translate(x,y)**括号里的值为百分数时，会以目前元素**本身的宽高**做参考，比如，目前元素本身的宽为100px，高为50px， 那填(50%,50%)，则表示就是向右移动50px、向下移动25px。  
+**top,left**等是基于**父元素**的。
+  
+**代码分析**:使子元素在父元素中居中显示的方法：**先相对父元素x，y方向偏离50%,再拉回相对于自身的50%**
+```
+<head>
+<style>
+        .main{
+            background-color: #D7D8DD;
+            width:1600px;
+            height:1200px;
+            position: relative;/*给父元素设置position属性，使子元素参照它*/
+        }
+        .page{
+            width:1400px;
+            height:790px;
+            background-color: #F5F4FA;
+            border-radius: 50px;
+            left:50%;/*相对于父元素x，y方向各偏离50%*/
+            top:50%;
+            position:absolute;
+            transform: translate(-50%,-50%);/*再拉回自身长和宽的50%*/
+        }
+    </style>
+</head>
+<body>
+    <div class="main">
+        <div class="page">
+
+        </div>
+    </div>
+</body>
+```
+看至18min  
+<center><h2>附加课 grid布局</h2></center>  
+
+### 一.基本概念  
+1. 容器和项目  
+**容器**：采用网格布局的区域，称为"容器"（container）  
+**项目**：容器内部采用网格定位的子元素，称为"项目"（item）**注意：项目只能是容器的顶层子元素，不包含项目的子元素**。  
+```
+<div>
+  <div><p>1</p></div>
+  <div><p>2</p></div>
+  <div><p>3</p></div>
+</div>
+```  
+上面代码中，最外层的div元素就是容器，内层的三个div元素就是项目,p元素不是项目。  
+2. 网格线  
+正常情况下，n行有n + 1根水平网格线，m列有m + 1根垂直网格线，比如三行就有四根水平网格线。  
+![](https://www.wangbase.com/blogimg/asset/201903/1_bg2019032503.png)  
+上图是一个 4 x 4 的网格，共有5根水平网格线和5根垂直网格线。  
+### 二.容器属性  
+####1. display属性  
+display:grid将指定一个容器采用网格布局。默认网格布局的容器都是块级元素，但是可以指定行内元素。  
+display:inline-grid.  
+**注意，设为网格布局以后，容器子元素（项目）的float、display: inline-block、display: table-cell、vertical-align等设置都将失效**。 
+####2. grid-template-columns/grid-template-rows属性  
+grid-template-columns属性定义每一列的列宽，grid-template-rows属性定义每一行的行高。  
+例如：
+```
+.container {
+  display: grid;
+  grid-template-columns: 100px 100px 100px;
+  grid-template-rows: 100px 100px 100px;
+}
+```  
+上面的代码定义了一个3×3，行高和列宽都是100px的网格。  
+
+也可以使用百分比指定  
+```
+.container {
+  display: grid;
+  grid-template-columns: 33.33% 33.33% 33.33%;
+  grid-template-rows: 33.33% 33.33% 33.33%;
+}
+```  
+- repeat 
+可以使用repeat改写上述代码  
+```
+.container {
+  display: grid;
+  grid-template-columns: repeat(3, 33.33%);
+  grid-template-rows: repeat(3, 33.33%);
+}
+```  
+- auto-fill  
+适用于：**容器的大小不确定，但是项目的大小确定的情况**。让项目尽可能放，直到不能放为止。  
+```
+.container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 100px);
+}
+```
+上面代码表示每列宽度100px，然后自动填充，直到容器不能放置更多的列  
+- fr  
+**适用于容器大小确定，项目大小只知道比例关系。虽然也可以通过比例算出每一个Item的大小，但是使用fr关键字就不用算了**
+如果两列的宽度分别为1fr和2fr，就表示后者是前者的两倍。  
+```
+.container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+```
+上面代码表示两个相同宽度的列。
+
+fr可以与绝对长度的单位结合使用，这时会非常方便。
+
+```
+.container {
+  display: grid;
+  grid-template-columns: 150px 1fr 2fr;
+}
+```
+上面代码表示，第一列的宽度为150像素，第二列的宽度是第三列的一半。1,2,3列共同填满整个容器
+- 网格线名称  
+grid-template-columns属性和grid-template-rows属性里面，还可以使用方括号，指定每一根网格线的名字，方便以后的引用。  
+示例：
+```
+.container {
+  display: grid;
+  grid-template-columns: [c1] 100px [c2] 100px [c3] auto [c4];
+  grid-template-rows: [r1] 100px [r2] 100px [r3] auto [r4];
+}
+```  
+- 布局实例  
+grid-template-columns属性对于网页布局非常有用。两栏式布局只需要一行代码。
+```
+.wrapper {
+  display: grid;
+  grid-template-columns: 70% 30%;
+}
+```
+传统的十二网格布局，写起来也很容易。
+```
+grid-template-columns: repeat(12, 1fr);
+```  
+#### 3. grid-row-gap 属性，grid-column-gap 属性，grid-gap 属性  
+grid-row-gap和grid-colume-gap分别设置行列间距  
+```
+.container {
+  grid-row-gap: 20px;
+  grid-column-gap: 20px;
+}
+```  
+grid-gap是它们的结合体，上述代码也可以这样改写  
+```
+.container {
+  grid-gap: 20px 20px;
+}
+```  
+>根据最新标准，上面三个属性名的grid-前缀已经删除，grid-column-gap和grid-row-gap写成column-gap和row-gap，grid-gap写成gap。  
+#### 4.grid-template-areas 属性  
+用来给区域命名  
+```
+.container{
+display: grid;
+grid-template-columns: 100px 100px 100px;
+grid-template-rows: 100px 100px 100px;
+grid-template-areas: "header header header"
+                     "main main sidebar"
+                     "footer footer footer";
+}
+```
+上述代码定义了一个九宫格，名称如areas所示  
+>注意，区域的命名会影响到网格线。每个区域的起始网格线，会自动命名为区域名-start，终止网格线自动命名为区域名-end。
+>比如，区域名为header，则起始位置的水平网格线和垂直网格线叫做header-start，终止位置的水平网格线和垂直网格线叫做header-end。  
+#### 5.grid-auto-flow属性  
+划分网格以后，容器的子元素会按照顺序，自动放置在每一个网格。默认的放置顺序是"先行后列"，即先填满第一行，再开始放入第二行，即下图数字的顺序。  
+![](https://www.wangbase.com/blogimg/asset/201903/bg2019032506.png)  
+这个顺序由grid-auto-flow属性决定，默认值是row，即"先行后列"。也可以将它设成column，变成"先列后行"。
+
+```
+grid-auto-flow: column;
+```  
+![](https://www.wangbase.com/blogimg/asset/201903/bg2019032512.png)  
+row dense，表示"先行后列"，并且尽可能紧密填满，尽量不出现空格。column dense，表示"先列后行"，并且尽量填满空格。  
+#### 6.justify-items 属性，align-items 属性，place-items 属性  
+justify-items属性设置单元格**内容**的水平位置（靠左，居中，靠右），align-items属性设置单元格内容的垂直位置（靠上，居中，靠下）。  
+这两个属性的可选值完全相同  
+- center:居中  
+- start：靠左/上  
+- end：靠右/下  
+- stretch：拉伸，占满单元格的整个宽度（默认值）  
+place-items是他们两个的合并简写形式  
+#### 7. justify-content,align-content,place-content属性  
+这三个属性是设置内容区在整个容器内位置的属性  
+- center 居中
+- start 靠左/上  
+- end 靠右/下  
+- stretch 占据整个容器  
+- space-around  
+![](https://www.wangbase.com/blogimg/asset/201903/bg2019032522.png)  
+- space-between  
+![](https://www.wangbase.com/blogimg/asset/201903/bg2019032523.png)  
+- space-evenly  
+![](https://www.wangbase.com/blogimg/asset/201903/bg2019032524.png)  
+#### 8.grid-auto-columns,grid-auto-rows属性  
+**grid-auto-columns**属性和**grid-auto-rows**属性用来设置浏览器自动创建的多余网格的列宽和行高。它们的写法与grid-template-columns和    grid-template-rows完全相同。如果不指定这两个属性，浏览器完全根据单元格内容的大小，决定新增网格的列宽和行高。  
+
+### 三.项目属性  
+####  1. grid-column-start 属性，grid-column-end 属性，grid-row-start 属性，grid-row-end 属性  
+
+- grid-column-start属性：左边框所在的垂直网格线
+- grid-column-end属性：右边框所在的垂直网格线
+- grid-row-start属性：上边框所在的水平网格线
+- grid-row-end属性：下边框所在的水平网格线  
+> 这四个属性的值，除了指定为第几个网格线，还可以指定为网格线的名字。  
+
+#### 2. grid-column 属性，grid-row 属性  
+上面属性的简写形式  
+```
+.item-1 {
+  grid-column: 1 / 3;
+  grid-row: 1 / 2;
+}
+/* 等同于 */
+.item-1 {
+  grid-column-start: 1;
+  grid-column-end: 3;
+  grid-row-start: 1;
+  grid-row-end: 2;
+}
+```  
+#### 3. justify-self 属性，align-self 属性，place-self 属性  
+**justify-self**属性设置单元格内容的水平位置（左中右），跟justify-items属性的用法完全一致，但只作用于单个项目。  
+**align-self**属性设置单元格内容的垂直位置（上中下），跟align-items属性的用法完全一致，也是只作用于单个项目。  
+### 四.与选择器配合  
+html文件
+```
+<div class="container">
+  <div class="item item-1">1</div>
+  <div class="item item-2">2</div>
+  <div class="item item-3">3</div>
+  <div class="item item-4">4</div>
+  <div class="item item-5">5</div>
+  <div class="item item-6">6</div>
+  <div class="item item-7">7</div>
+  <div class="item item-8">8</div>
+  <div class="item item-9">9</div>
+</div>
+```  
+css文件
+```
+.container {
+  /*对容器的属性进行规定*/
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.item {
+    /*对所有item的属性进行规定*/
+  font-size: 4em;
+  text-align: center;
+  border: 1px solid #e5e4e9;
+}
+
+.item-1 {
+    /*对单个item进行规定*/
+  background-color: #ef342a;
+}
+
+.item-2 {
+  background-color: #f68f26;
+}
+
+.item-3 {
+  background-color: #4ba946;
+}
+
+.item-4 {
+  background-color: #0376c2;
+}
+
+.item-5 {
+  background-color: #c077af;
+}
+
+.item-6 {
+  background-color: #f8d29d;
+}
+
+.item-7 {
+  background-color: #b5a87f;
+}
+
+.item-8 {
+  background-color: #d0e4a9;
+}
+
+.item-9 {
+  background-color: #4dc7ec;
+}
 ```
