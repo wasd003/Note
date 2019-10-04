@@ -740,7 +740,8 @@ string verify(TreeNode* root)
 1，2，#，#，3，#，#
 ****
 [52.全排列Ⅱ](https://leetcode-cn.com/problems/permutations-ii/)  
-**思路**：每一轮选择的时候不能选择重复的元素，例如这一轮已经选过10了，那么在之后的循环过程中如果又遇见10就不用再选了。
+**思路**：每一轮选择的时候不能选择重复的元素，例如这一轮已经选过10了，那么在之后的循环过程中如果又遇见10就不用再选了。  
+**优化**：sort后预处理出next数组，如果i元素已经选过了，直接跳到next[i]。  
 ****
 [53.子集Ⅱ](https://leetcode-cn.com/problems/subsets-ii/submissions/)  
 **思路**：用一个哈希表记录nums中每一个数字num出现的次数tot，每一轮考虑放进数组中i(0<=i<=tot)个num  
@@ -762,10 +763,17 @@ string verify(TreeNode* root)
 - **思路**：先BFS找到红方第一次选择的点，然后分别求出**以该点为根节点的子树的节点个数**（选择该点父节点的情况），**以该点的左/右儿子为根节点的子树的节点数量**（选择该点左右儿子的情况）。   
 ****  
 [56.最长有效括号](https://leetcode-cn.com/problems/longest-valid-parentheses/submissions/)  
-**有效括号序列的性质**：  把'('看作1,')'看作-1  
-1. 【i,j】区间合法的充要条件是，任意的【i，k】{i<k<j} 区间和>0,并且【i，j】区间和==0
-2. 如果【i，j】区间和<0，那么任意k{i<k<j},【k，j】不存在合法括号序列  
-**注意**：本题需要正着做一遍，翻转后做一遍。因为对于((())这种情况，只是做一遍无法得到答案，需要翻转为(()))再做一遍。  
+虽然说通常括号匹配的题目使用栈来做，但是本题使用DP更加简单，设f[i]是以i结尾的最长合法序列长度  
+先处理嵌套的问题：
+```
+if(i-f[i-1]-1>=0&&s[i-f[i-1]-1]=='(')
+    f[i]=f[i-1]+2;
+```
+再处理并列的问题
+```
+if(i-f[i]>=0&&s[i-f[i]]==')')
+    f[i]+=f[i-f[i]];
+```  
 ****
 [57.滑动窗口最大值](https://leetcode-cn.com/problems/sliding-window-maximum/submissions/)  
 **单调队列应用**：查找滑动窗口的最值  
@@ -779,7 +787,13 @@ string verify(TreeNode* root)
 **思路**：把数组存环，求前缀和，每次找i前面长度为n的滑动窗口的最小值，前缀和相减得到区间和的最大值  
 ****
 [59.和为k的子数组](https://leetcode-cn.com/problems/subarray-sum-equals-k/submissions/)  
-**思路**：用hash记录每个前缀和出现的次数，对于当前前缀和pre，他对答案的贡献是hash[pre-k],即pre-k的前缀和出现的次数。注意维护hash即可。  
+
+**思路**：用hash记录每个前缀和出现的次数，对于当前前缀和pre，他对答案的贡献是hash[pre-k],即pre-k的前缀和出现的次数。注意维护hash即可。 
+**连续的子数组常用算法**：
+- **前缀和＋哈希表**  
+- 双指针  
+类似题目：[连续的子数组和](https://leetcode-cn.com/problems/continuous-subarray-sum/)  
+该题利用到的性质：两个前缀和相减为n倍的k等价于两个前缀和模k同余。
 ****
 [60.将数据流变为多个不相交的区间](https://leetcode-cn.com/problems/data-stream-as-disjoint-intervals/submissions/)  
 **思路**：L以每个区间的右端点为key，其对应的左端点为val，R相反。  
