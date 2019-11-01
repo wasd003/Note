@@ -349,4 +349,292 @@ stold
 
 <center><h2>9.6 容器适配器</h2></center>  
 
-### 一.
+适配器是一种机制，能够使一种事物使用起来好像是另一种事物。分为容器适配器，函数适配器，迭代器适配器  
+**容器适配器有：stack,queue,priority_queue**    
+一个容器适配器接受一个已有的底层容器，实现新的接口，使之使用起来好像是另一个容器。    
+stack,queue都是基于deque实现的，priority_queue是基于vector实现的
+
+<center><h2>10.3 定制操作</h2></center>  
+
+stable_sort 稳定排序，维持相等元素之间的位置关系不变   
+###问题提出：对于某些特殊的情形，算法对函数的参数个数有规定，可是规定个数的参数个数无法满足函数的要求，怎么办?  
+###问题剖析：本质上就是如何改变一个函数的参数个数
+### 一.lamda表达式    
+**lamda表达式的解决方案：将多出来的参数放入捕获列表中** 
+一般形式 **[捕获列表] (参数列表)->返回值 {函数体};**  
+> 注意函数体最后有分号   
+
+其中参数列表和返回值类型可以省略，捕获列表不可以  
+调用通过lamda表达式定义的函数的方法与调用普通函数的方法相同
+```
+int main()
+{
+	int size = 0;
+	string s="12";
+	auto f = [size](const string&s)->bool
+	{
+		return size >= s.size();
+	};
+	cout<<f(s)<<endl;
+}
+```  
+比如find_if()函数的第三个参数要求是一个一元谓词(单参函数),可是我们想写的是size>=s.size() ，有size和s两个变量，这时就可以使用lamda表达式，捕获size(就是上面的demo)  
+- 值捕获和引用捕获  
+上面的demo就是值捕获的例子，相当于传值  
+引用捕获比如[&size]，相当于传引用  
+- 隐式捕获  
+可以不说明捕获了哪些变量而只说明通过那种方式捕获  
+值捕获[=],引用捕获[&]  
+- 在lamda中修改捕获变量的值  
+如果只通过值捕获是无法修改捕获变量的值的  
+```
+int main()
+{
+	int arg = 0;
+	auto f = [arg] ()
+	{
+		return ++arg;
+	};
+	cout << f()<<endl;
+	cout << arg;
+}
+//错误
+```  
+**如果想在lamda中修改又不对原变量产生影响可以使用mutable关键字**  
+```
+int main()
+{
+	int arg = 0;
+	auto f = [arg] () mutable
+	{
+		return ++arg;
+	};
+	cout << f()<<endl;
+	cout << arg;
+}
+//输出 1 0
+```  
+**如果想在lamda中修改并且对原变量产生影响可以使用引用捕获**  
+```
+int main()
+{
+	int arg = 0;
+	auto f = [&arg] ()
+	{
+		return ++arg;
+	};
+	cout << f()<<endl;
+	cout << arg;
+} 
+//输出 1 1 
+```  
+### 二.bind函数  
+**bind的解决方法：将多出来的参数绑定到函数上去**
+bind函数是一个函数适配器，它接受一个可调用对象生成一个新的可调用对象  
+基本语法：  
+auto newFunc=bind(oldFunc,arg_list)  
+还是上面的例子  
+```
+bool check_size(const string&s,int size)
+{
+	return size>=s.size();
+}
+```
+这时一个双参函数，将其改变为单参函数的方法是  
+auto new_check_size=bind(check_size,_1,sz)  
+_1是一个占位符，占据const string&的位置，将sz传递给了size  
+**直观理解**
+![](http://i2.tiimg.com/699146/6135cc8193d40f26.png)  
+>注意：使用bind函数需要引入头文件<functional>  
+>使用_n占位符需要引入命名空间 using namespace std::placeholders  
+- 使用bind重排参数顺序  
+```  
+bind(oldFund(_2,_1))  
+```  
+- 绑定引用  
+默认绑定的参数使用拷贝的方式，如果想使用引用的方式可以使用ref,如果想使用const 引用可以使用cref  
+
+<center><h2>10.4 再谈迭代器</h2></center>   
+### 一.反向迭代器在排序中的应用  
+sort(nums.rbegin(),rend())  //倒序排序  
+### 二.反向迭代器在查找中的应用  
+auto it=find(nums.rbegin(),nums.rend(),val);  
+查找nums中最后一个val的位置  
+>注意：返回的是一个it是一个reverse_iterator，++/--操作符是反的
+<center><h2>10.5 泛型算法结构</h2></center>  
+
+谓词函数：返回bool值的函数或者仿函数，几个参数就是几元谓词  
+### 算法命名规范  
+#### 使用谓词代替==/<  
+比如sort(),可以重载<，也可以自定义cmp函数  
+再如unique(),可以重载==，也可以自定义cmp函数  
+#### _if版本  
+传递一个谓词，对返回值为真的元素进行操作  
+比如find_if(it1,it2,check),remove_if(it1,it2,check)  
+#### _copy版本  
+通常算法只在原先的容器上进行操作，如果想把数据输出到另一个容器，可以使用copy版本  
+比如reverse_copy(it1,it2,dest)  
+**dest为复制的起始位置**  
+
+<center><h2>11.3 关联容器操作</h2></center>  
+
+### 查找  
+find(k)  返回第一个值为k的迭代器  
+count(k)  返回值为k的元素个数  
+lower_bound(k)  返回第一个大于等于k的元素的迭代器  
+upper_bound(k)  返回第一个大于k的元素的迭代器  
+equal_range(k)  返回一个迭代器pair，pair的first指向第一个值为k的元素，pair的second指向最后一个值为k的元素的后一位，如果k不存在，两个都是end()  
+注意：**map是按照key来查找的，与value无关**  
+
+<center><h2>11.4 无序容器</h2></center>   
+注意：unordered_map的key以及unordered_set的值都不能是自定义类型，如果是自定义类型需要自己提供hash函数  
+map的key和set的值也不能是自定义类型，如果是自定义类型需要重载<  
+
+<center><h2>12.1 动态内存与智能指针</h2></center>  
+
+###常用操作 
+shared_ptr<Type> sp;//允许多个指针指向同一个对象   
+unique_ptr<Type> up;//一次只能有一个指针指向一个对象  
+p //如果p指向了一个对象返回true，如果p指向的是空对象返回false  
+p.use_count()//shared_ptr独有的操作，返回同时与p共享同一个对象的指针个数  
+p.unique() //return p.use_count()==1  
+###make_shared  
+最安全的使用动态内存的方式就是使用make_shared函数，此函数**为一个对象动态分配内存并返回指向该对象的share_ptr指针**      
+使用方式：  
+```
+share_ptr<ListNode> ptr=make_shared<ListNode>(val);  
+与  
+auto ptr=new ListNode(val);
+等价
+```
+>使用智能指针代替传统指针简单来说就是使用make_shared替代new，使用=nullptr替代delete  
+>智能指针中有一个引用计数，如果某一块内存没有指针指向它，该块内存就会被释放  
+get函数的使用情况  
+get函数返回的是智能指针的内置指针(普通指针)，只在向某些不能使用智能指针，只能使用普通指针的函数传递参数时使用   
+注意：**使用了get返回的指针的代码不应该delete这个指针，因为这个指针是智能指针的内置指针，它的销毁应该自动完成而不是手动delete**  
+思考：**删除一个用智能指针写的单链表是不是只要把头节点置为nullptr，就删除了整条链表？**  
+###unique_ptr  
+unique_ptr的初始化：unique_ptr没有像make_shared一样的函数，只能使用new来初始化  
+例如：
+```
+unique_ptr<int> sp(new int(42));  //正确  
+unique_ptr<int> sp=new int(42);  //错误  
+unique_ptr<int> sp1=sp;  //错误
+```  
+####release  
+放弃unique_ptr对当前对象的控制权，并且返回该对象  
+####reset  
+unique_pre指向另一个对象，之前的对象由于无指针所指，被自动释放  
+示例  
+```
+p2.reset(p1.release)  //将p1的控制权转移给p2
+unique_ptr<int> p3(p2.release())  //将p2的控制权转移给刚出生的p1
+```  
+下面这段代码输出为几?  
+```
+shared_ptr<int> func()
+{
+	auto p = make_shared<int>(10);
+	return p;
+}
+int main()
+{
+	auto s = func();
+	cout << s.use_count() << endl;
+	return 0;
+}
+```  
+答案：1  
+###  动态分配数组  
+可以对动态分配数组进行值初始化，方法是在中括号后面加一对空括号，表示初始化为0  
+```
+int *ptr=new int[n]();
+```
+也可以使用初始值列表  
+```
+int *ptr=new int [10]{1,2,3,4};
+```  
+>上面代码最终的结果是：{1，2，3，4，5，0，0，0，0，0}  
+
+注意：**动态分配一个空数组是合法的**  
+
+### 动态分配数组与智能指针  
+可以使用unique_ptr动态分配一个数组  
+```
+unique_ptr<int[]> sp(new int [42])  
+```  
+**该指针不支持点和箭头运算符，但是可以使用中括号访问数组中的元素**  
+### allocator类  
+普通的动态分配数组把内存分配和对象构造两个过程放在一起，使用allocator类可以把二者分开  
+即：**先分配原始内存，等需要的时候再构造对象**  
+API：  
+分配/释放内存  
+构造/析构对象
+```
+allocator<T> alt;  //定义一个分配内存的分配器  
+auto vec=alt.allocate(n)  //vec指针指向一段长度为n的原始内存
+alt.deallocate(vec,n)  //将vec指针指向的内存释放掉  
+alt.construct(p,args)  //在p指针所指向的原始内存构造一个对象  
+alt.destroy(p)  //摧毁p指针指向的对象
+```  
+拷贝与填充  
+见p430  
+### 补充内容
+####size_type&&size_t
+size_type类型：专门用来存放vector和string,size()返回值的变量类型  
+size_t类型：使用sizeof关键字得到的就是size_t类型  
+什么时候使用：**vector和string的下标变量应该使用size_type类型，普通数组的下标变量应该使用size_type类型**  
+####istringstream&&ostringstream&&stringstream  
+>istringstream  
+
+将流中的内容放入字符串中
+用途：**将字符串按照不可见字符分割**  
+```
+istringstream flow(s) //使用s初始化字符串流  
+flow.str()//返回字符串流中储存的字符串
+按照不可见字符将字符串分割的方法：
+while(flow>>words)
+{
+	cout<<words<<endl;//每一个words是一小段字符串
+}
+```
+**注意flow>>words不是将words读取到flow中，而是把flow截取一部分放入words中**
+
+>ostringstream  
+
+将普通字符串中的内容放入流中  
+```
+int main()
+{
+	ostringstream oss;
+	istringstream iss;
+	iss.str("hi iss");
+	cout << iss.str();
+	string str;
+	while (iss >> str)
+		oss << str << endl;
+
+	istringstream iss2("hi iss2");
+	while (iss2 >> str) {
+		oss << str << endl;
+	}
+	cout << oss.str();
+	return 0;
+}
+```
+输出：
+```
+hi
+iss
+hi
+iss2
+```  
+>stringstream  
+
+既有“<<”操作符也有“>>”操作符
+主要作用是**实现字符串和任意数据类型的转换**  
+```
+stringstream stream;
+stream<<类型1；
+stream>>类型2；
+```

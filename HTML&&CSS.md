@@ -573,7 +573,20 @@ inline-block:不同元素在同一行但是之间有间隔
     </div>
 </body>
 ```
-看至18min  
+### 文字排版  
+1. 字体 font-family  
+2. 字号 font-size  
+3. 颜色 color  
+4. 粗体 font-weight  
+5. 斜体 font-style:italic  
+6. 下划线 text-decoration:underline
+7. 删除线 text-decoration:line-through   
+### 段落排版  
+1. 段落缩进 text-indent:2em 缩进两个字符  
+2. 行间距   line-height:2em   
+3. text-align:center left right
+
+
 <center><h2>附加课 grid布局</h2></center>  
 
 ### 一.基本概念  
@@ -834,3 +847,169 @@ css文件
   background-color: #4dc7ec;
 }
 ```
+
+<center><h2>第十五课 盒子模型</h2></center>  
+
+### block&&inline&&inline-block  
+inline属性无法指定宽高，block属性无法使多个元素出现在一排    
+inline-block即可以指定宽高也可以让多个元素出现在同一排   
+
+### 盒子模型  
+margin:外边距  
+padding：内边距  
+
+从外至内依次是margin->border->padding->内容区  
+![](http://i2.tiimg.com/699146/e57966188cb2d74a.png)  
+height/width属性改变的都是内容区的宽高
+
+>两个盒子垂直排列的时候，上下间距是max(上盒子下边距，下盒子上边距)  
+
+### 单位问题  
+[帖子](https://blog.csdn.net/sjw1039115768/article/details/80460777)  
+重点掌握vw和vh
+
+
+<center><h2>第十六课 Flex布局</h2></center>
+
+
+**justify-content属性用于设置item在主轴方向上的对齐方式**
+center:居中排列  
+flex-start:从行首位置开始排列  
+flex-end:从行末位置开始排列  
+stretch:两端对齐   
+**align-items属性定义所有item在侧轴方向上的对齐方式**  
+center:居中排列  
+flex-start:从列首位置开始排列  
+flex-end:从列末位置开始排列  
+stretch:拉伸使竖直方向上铺满(默认)  
+**align-self属性定义某一个item在侧轴方向上的对齐方式**   
+**flex-direction属性定义item在容器内的排列方式，默认是row**  
+row   
+row-reverse   
+column   
+column-reverse    
+**flex-basis/grow/shrink**  
+注意：**这三个属性都是定义在item上的，不是容器上！！！**  
+flex-grow越大扩展的越多，flex-shrink越大压缩的越多  
+[详细解释](https://blog.csdn.net/m0_37058714/article/details/80765562)
+
+
+<center><h2>第十七课 常用布局</h2></center>  
+
+###浮动布局  
+设置float以后，元素脱离文档流，上下方向就好像这个元素不存在一样，但是左右方向依然存在  
+**清除浮动**  
+这个例子中：
+```
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+    .for-float
+    {
+        float:left;
+        height:100px;
+        width:100px;
+        background-color: orange;
+    }
+    .for-normal
+    {
+        height:20vh;
+        background-color: blueviolet;
+    }
+    </style>
+</head>
+<body>
+    <div class="for-float">浮动布局1</div>
+    <div class="for-float">浮动布局2</div>
+    <div class="for-float">浮动布局3</div>
+    <div class="for-normal">普通布局</div>
+</body>
+</html>
+```  
+普通布局会侵占浮动布局的地盘，可以设置一个div用来清除浮动  
+```
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+    .for-float
+    {
+        float:left;
+        height:100px;
+        width:100px;
+        background-color: orange;
+    }
+    .for-normal
+    {
+        height:20vh;
+        background-color: blueviolet;
+    }
+    .clear-float
+    {
+        clear: both;
+    }
+    </style>
+</head>
+<body>
+    <div class="for-float">浮动布局1</div>
+    <div class="for-float">浮动布局2</div>
+    <div class="for-float">浮动布局3</div>
+    <div class="clear-float"></div>
+    <div class="for-normal">普通布局</div>
+</body>
+</html>
+```
+|值|描述|
+|--|--|
+|left|在左侧不允许出现浮动元素|
+|right|在右侧不允许出现浮动元素|
+|both|在两侧不允许出现浮动元素|
+|none|默认值，允许浮动元素出现在两侧|
+###定位布局   
+将元素定位在“显示器上”(不随拖动而移动位置)  
+position:fixed  
+
+
+<center><h2>第十七课 常用布局</h2></center>  
+
+###写菜单的常用方法  
+####法一  
+ul，使用flex布局，设置justify-content属性  
+####法二  
+ul,使用float布局  
+###a标签与block  
+超链接默认是inline的，如果只是想一行文字可点击，使用默认样式即可，但如果想让一整个区域都可点击(a标签中不只放一行文字，还要放很多东西)，就需要把display设置为block  
+原因：布局的时候不是经常使用div吗，其实让整个区域都可点击就是一个超链化的div，只不过没有这种东西，所以将a的display设置为block  
+###block，inline，inline-block  
+block:(1)独占一行，(2)可设置宽高  
+inline:(1)不独占一行，(2)不可设置宽高  
+inline-block:()1不独占一行，(2)可设置宽高  
+###相似元素的类的写法  
+几个元素有相似的地方，也有不同的地方，这时如果把他们设置为不同的类，就需要对相同的部分重复设置样式，但如果设置为相同的类，他们又不是完全相同的，也不合适。这种情况下可以设置多个类  
+比如：
+```
+class="icon icon-home"  
+class="icon icon-found"
+class="icon icon-order"
+```
+选择器选择：  
+全选
+```
+.icon
+```
+选特定 
+```
+.icon.icon-home
+注意没有空格
+```  
+###垂直方向居中的方法  
+可以使用flex布局，align-items
