@@ -979,7 +979,7 @@ flex-grow越大扩展的越多，flex-shrink越大压缩的越多
 position:fixed  
 
 
-<center><h2>第十七课 常用布局</h2></center>  
+<center><h2>第十七课 其他</h2></center>  
 
 ###写菜单的常用方法  
 ####法一  
@@ -1012,4 +1012,6 @@ class="icon icon-order"
 注意没有空格
 ```  
 ###垂直方向居中的方法  
-可以使用flex布局，align-items
+可以使用flex布局，align-items  
+问：如果只是想让文字垂直方向居中，还可以用什么方法？  
+答：**line-height:设置为字体高度**  
