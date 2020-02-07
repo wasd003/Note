@@ -78,26 +78,13 @@
 >code:
 
 ```
-bool Is_SubSequence(string S, string s)//S是母串，s是子串 
-{
-	vector<int>hash[26];
-	int n = S.size();
-	for (int i = 0; i < n; ++i)
-	{
-		hash[S[i] - 'a'].push_back(i);
-	}
-	int m = s.size();
-	int pre = -1;//前一个字母匹配的位置
-	for (int i = 0; i < m; ++i)
-	{
-		auto index = lower_bound(hash[s[i] - 'a'].begin(), hash[s[i] - 'a'].end(), pre + 1);
-		if (index == hash[s[i] - 'a'].end())
-		{
-			return false;
-		}
-		pre = *index;
-	}
-	return true;
+for(int i=0;i<s.size();i++){
+    auto index=upper_bound(hashTable[s[i]-'a'].begin(),hashTable[s[i]-'a'].end(),pre);
+    if(index==hashTable[s[i]-'a'].end()){
+        is_ok=false;
+        break;
+    }
+    pre=*index;
 }
 ```  
 ## 回文串问题  
@@ -111,8 +98,10 @@ bool Is_SubSequence(string S, string s)//S是母串，s是子串
 ## 单调栈应用——定位下一个元素  
 [柱形图中的最大矩形](https://leetcode-cn.com/problems/largest-rectangle-in-histogram/)  
 - **单调栈的普通应用**：通过一次遍历找到一个元素左/右边第一个比它大/小的元素  
-- **单调栈的进阶应用**：通过一次遍历找到一个元素左&&右边第一个比它大/小的元素  
-进阶应用的缺陷：为了保证每个元素都能出栈，如果是找比该元素小的元素需要在数组末尾插入一个非常小的数；如果是找比该元素大的需要在数组末尾插入一个非常大的数。  
+- **单调栈的进阶应用**：通过一次遍历找到一个元素左&&右边第一个比它大/小的元素,**注意**  
+    进阶应用的缺陷：
+    - 为了保证每个元素都能出栈，如果是找比该元素小的元素需要在数组末尾插入一个非常小的数；如果是找比该元素大的需要在数组末尾插入一个非常大的数。  
+    - 左右不能同时取到等，如果左边是第一个严格小于的，那么右边就是第一个严格小于等于的，反之亦然。
 - **关于取等的问题**：  
 进阶应用：弹栈是答案，所以如果找小/大于等于，就在while循环处加等号。
 普通应用：弹栈不是答案，所以如果是找小/大与等于，while循环出不能加等号
@@ -171,11 +160,15 @@ vector<int> nextGreaterElement(vector<int>& nums1, vector<int>& nums2) {
         }
         return res;
     }
-```
+```  
+## 单调栈应用-查找小于最小的和大于最大的  
+
 [奇偶跳]("https://leetcode-cn.com/problems/odd-even-jump/submissions/")    
-- **查找数组中第i个元素右侧比他大的元素中最小的那一个（或者比他小的元素中最大的那一个）的位置的方法**：argsort后找右边第一个index大于当前元素index的就是右侧比他大的元素中最小的那一个，左边第一个index大于当前元素的就是右侧比他小的元素中最大的那一个。  
-- 代码细节：因为偶数跳的时候多个相同的值需要跳到最小的位置上去，所以需要分情况讨论：奇数情况值相同，index递增排序，偶数情况值相同index递减排序。
-迭代器
+- **查找数组中第i个元素右侧比他大的元素中最小的那一个（或者比他小的元素中最大的那一个）的位置的方法**：先按照val排序(注意考虑val相等的情况)，cur元素右侧第一个index比它大的元素就是cur对应的答案。因为按照val递增排序，第一个遇见的就是大于中最小的，又因为index大于cur，所以确实是在cur右侧。  
+- **注意**：一开始按照val排序的时候需要考虑如果val相等的情况下按照index增序还是降序排列。 
+
+[132模式](https://leetcode-cn.com/problems/132-pattern/submissions/)  
+依次尝试枚举每一个元素为a[k],找到每个元素右侧小于它的元素中最大的那一个，维护左侧最小的元素，右侧小于中最大的元素大于左侧最小的元素就返回true。  
  
 ## 单调栈应用——中缀表达式转化为后缀表达式  
 首先定义栈内优先级和栈外优先级
@@ -187,11 +180,14 @@ vector<int> nextGreaterElement(vector<int>& nums1, vector<int>& nums2) {
 [基本计算器](https://leetcode-cn.com/problems/basic-calculator/)
 
 ## 单调栈应用——在线处理数组问题  
-[132模式](https://leetcode-cn.com/problems/132-pattern/submissions/)  
-**算法的正确性**:因为stk中保存的数都是已经遍历过的，所以stk中的数字一定在当前数字的右边。即：stk的数字具有成为“3”的潜质（位置正确),当nums[i]>stk.top()时，可以更新three（因为满足2>3）
+
 
 [移掉k位数字](https://leetcode-cn.com/problems/remove-k-digits/submissions/)  
 **思路**:维护一个非递减栈，最终栈中剩下的就是答案字符串  
+**注意**：维护非递减栈的方法并不能保证正好移除了k个元素，所以需要处理  
+- 如果移出元素超过k个，就不能移出，直接把字母push到res中  
+- 如果移出元素小于k个，需要substr num.size()-k个字母，保证长度正确。  
+
 # 二叉树专题  
 **二叉树的题目debug方法**：  
 - 输出以root为根的情况，递归尽量避免单步跟踪调试  
@@ -232,7 +228,7 @@ BST的性质：中序遍历单调递增
 [插入二叉搜索树的结点](https://leetcode-cn.com/problems/insert-into-a-binary-search-tree/submissions/)  
 [不同的二叉搜索树Ⅱ](https://leetcode-cn.com/problems/unique-binary-search-trees-ii/)    
 ## 树的序列化问题  
-
+通常采用先序序列化：根+,+左+,+右
 [从先序遍历还原二叉树](https://leetcode-cn.com/problems/recover-a-tree-from-preorder-traversal/)   
 **思路**:先取出字符串中第一个数字作为根节点，然后把剩余字符串的每一个横线部分减一，并且将其分为左右两部分，递归生成左右子树  
 [寻找重复的子树](https://leetcode-cn.com/problems/find-duplicate-subtrees/submissions/)  
@@ -254,6 +250,7 @@ string verify(TreeNode* root)
 比如[1,2,3,NULL,NULL,NULL,NULL]的编码为1，2，#，#，3，#，#  
 
 [二叉树的序列化与反序列化](https://leetcode-cn.com/problems/serialize-and-deserialize-binary-tree/submissions/)  
+反序列化的困难：不知道字符串中左右子树的分界线。但是可以每次处理根节点，然后继续往下做，等到左/右子树生成好之后会自动回溯。
 **比较特殊的树中递归写法**：从先序遍历序列字符串还原得到树的方法：每次把根节点处理出来，在递归处理左右子树，注意需要用index记录当前处理到字符串的哪一个位置。  
 
 ## 树的遍历问题  

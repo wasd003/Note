@@ -64,4 +64,46 @@ if(!i){
 
 由本题对DP的思考：  
 - DP的状态转移之所以难写是因为状态设计的不好，具体而言，状态设计的约束不够强，使得可转移的选择太多，因此如果写不出转移方程，可以通过**添加状态**(**增加dp数组的维数**)，来写出转移方程。得到转移方程后再化简。  
-- 对于BaseCase的处理除了错位和把原数组整体后移一位以外还有一种折中的办法(不想错位那么难想，也不想整体后移那么慢)，**特判**。具体方法参见上面的题目。
+- 对于BaseCase的处理三种方法：  
+    - 错位(最优雅的方式)：假设原数组的下标从[0,n-1]变为了[1,n]，状态转移方程照常写，只不过nums[i]改为了nums[i-1]（对f数组下标的访问不必改变）。  
+    - 特判：if(i==0){...continue;},适用于边界情况比较复杂的情形
+    - 在数组首位置添加一个元素，物理错位。
+ 
+
+[7.地下城游戏](https://leetcode-cn.com/problems/dungeon-game/)  
+- 方格取数类问题设计状态,明确(i,j)表示取数之前。  
+- code技巧：如果有多个转移来源，且多个转移来源都可能出界，一次更新一个来源。  
+```
+for(int i=N-1;~i;i--){
+    for(int j=M-1;~j;j--){
+        if(i+1<N){ 
+            f[i][j]=min(f[i][j],f[i+1][j]-g[i][j]); //一次更新一个来源
+        }
+        if(j+1<M){
+            f[i][j]=min(f[i][j],f[i][j+1]-g[i][j]); //一次更新一个来源
+        }
+        if(f[i][j]<=0) f[i][j]=1;
+    }
+}
+```  
+- 反向DP  
+给定起点和终点的DP问题，设计状态除了从起点入手还可以从终点入手。  
+本题设f(i,j)表示从(i,j)走到终点所需的最小健康值。  
+[8.戳气球](https://leetcode-cn.com/problems/burst-balloons/)  
+区间dp一定不要忘了枚举游标k  
+设k是(i,j)最后一个被戳爆的气球  
+[9.拼接最大数](https://leetcode-cn.com/problems/create-maximum-number/)  
+f(i,j,t) 表示nums1前i个数字和nums2前j个数字拼成长度为t的最大的数字。  
+状态转移：  
+```
+    if(i>0)
+        f[i][j][t]=f[i][j][t].max(f[i-1][j][t].max((f[i-1][j][t-1].multiply(BigInteger.valueOf(10))).add(BigInteger.valueOf(nums1[i-1]))));
+    if(j>0)
+        f[i][j][t]=f[i][j][t].max(f[i][j-1][t].max((f[i][j-1][t-1].multiply(BigInteger.valueOf(10))).add(BigInteger.valueOf(nums2[j-1]))));
+        
+```  
+[10.青蛙过河](https://leetcode-cn.com/problems/frog-jump/)  
+注意区分石子编号和距离两个概念。  
+f(i,j)表示从起点开始，最后一次跳跃的距离为j，能否到达第i号石子。  
+本题有趣的地方在于其计算状态的方式。和一般的递推不同，本题采用宽搜的方式搜索有效的状态。如果搜索到了，就是合法的状态，如果没搜索到就说明该状态不合法。  
+启示：一般的DP问题是计算min/max/种类数，遇到这种**是否**的DP问题，可以考虑使用宽搜搜索合法状态。

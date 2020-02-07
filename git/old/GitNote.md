@@ -135,7 +135,8 @@ git fetch origin
 git fetch origin 分支名
 ```
 >取回某一分支的更新  
-取回分支x的更新后，本地会出现origin/x这一分支，如果想合并git merge orgin/x即可
+取回分支x的更新后，本地会出现origin/x这一分支，如果想合并git merge orgin/x即可  
+要想查看取回来的更新分支，可以使用git branch -r
 ### Pull
 ```
 git pull origin 远程分支名：本地分支名  
@@ -148,3 +149,6 @@ pull==fetch+pull
 [blog](http://www.ruanyifeng.com/blog/2012/08/how_to_read_diff.html)  
 会显示变动一行的前三行和后三行，共七行。  
 变动行号为起始行号+3  
+### 冲突处理  
+不是基于最新版所做的修改不能push，先pull下来，这里pull不会覆盖本地文件，而是拉取的和本地的都保留，根据需要修改之后再push。  
+
